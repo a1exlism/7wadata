@@ -13,7 +13,7 @@ CREATE TABLE users (
 # data query field
 CREATE TABLE data_query (
   id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  type       VARCHAR(20)  NOT NULL,
+  type       INT UNSIGNED NOT NULL,
   city       VARCHAR(20),
   qq         INT UNSIGNED,
   weixin     VARCHAR(25),
@@ -30,14 +30,31 @@ CREATE TABLE data_query (
 
 # projects manager
 CREATE TABLE projs (
-  p_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-  u_id INT UNSIGNED NOT NULL ,
+  proj_id  INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id  INT UNSIGNED NOT NULL,
   excel_id INT UNSIGNED NOT NULL
 )
   CHARACTER SET = utf8;
 
 # excel
-CREATE CREATE TABLE excels (
-  exc_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE excels (
+  exc_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+);
 
+# privileges
+CREATE TABLE user_privilege (
+  id        INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id   INT NOT NULL,
+  proj_id   INT NOT NULL,
+  is_create BOOL         DEFAULT 1,
+  is_drop   BOOL         DEFAULT 1,
+  is_select BOOL         DEFAULT 1,
+  is_alter  BOOL         DEFAULT 1,
+  is_insert BOOL         DEFAULT 1,
+  is_update BOOL         DEFAULT 1
+);
+
+# add an Admin by default (only one)
+INSERT INTO users (username, password, is_admin) VALUE (
+  'root_admin', '116bcf2f16ee7e433226af275a679caf', 1
 );

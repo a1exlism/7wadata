@@ -80,3 +80,9 @@ app/logs/*
 !app/logs/index.html
 !app/logs/.htaccess
 /vendor/
+
+# temp
+Semantic-UI/
+
+# node
+node_modules/
