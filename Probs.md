@@ -3,3 +3,10 @@
 2. [双入口](http://csser.work/09/23/2016/php-ci-entrance/#方案2-文件夹归类)
 
 3. application/config/config.php line38 把index.php删掉了, 可能会出问题. 记录一下
+
+4. [核心类扩展 core/MY_Controller](http://stackoverflow.com/questions/3678798/codeigniter-check-for-user-session-in-every-controller)
+  for session check => create a MY_Controller for reusing
+
+5. [CodeIgniter BASEPATH](http://stackoverflow.com/questions/26990196/codeigniter-basepath)
+
+6. user/ 和 admin/ session冲突, 更改admin session其中一个字段为admin_id

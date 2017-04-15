@@ -1,9 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller
+class Login extends MY_Controller
 {
 	
+	private $salt = 'admin';
 	public function __construct()
 	{
 		parent::__construct();
@@ -12,8 +13,7 @@ class Login extends CI_Controller
 	
 	public function index()
 	{
-		$this->load->model('session_check');
-		if ($this->session_check->check() === 1) {
+		if ($this->session_check()) {
 			redirect('/admin/manager', 'location', 301);
 		}
 		$this->load->view('admin/login');
@@ -22,10 +22,10 @@ class Login extends CI_Controller
 	public function login_check()
 	{
 		$username = $this->input->post('username');
-		$password = md5($this->input->post('password') . 'admin');
-		$query_admin = $this->user->get_admin()->row();
-		if ($username == $query_admin->username && $password == $query_admin->password) {
-			$this->session->set_userdata('user_id', $username);
+		$password = $this->input->post('password');
+		
+		if ($this->user->pass_check($username, $password) == 1) {
+			$this->session->set_userdata('admin_id', $username);
 			$this->session->set_userdata('is_login', 1);
 			$res = array('statusCode' => 1);
 		} else {
