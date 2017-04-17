@@ -10,7 +10,7 @@
 	<style type="text/css">
 		
 		
-		.vertical_center {
+		.vertical-center {
 			position: relative;
 			top: 50%;
 			-webkit-transform: translateY(-50%);
@@ -26,8 +26,8 @@
 
 </head>
 <body>
-<div class="ui container center aligned vertical_center">
-	<div class="ui centered three column grid">
+<div class="ui container center aligned vertical-center">
+	<div class="ui centered three column doubling stackable grid container">
 		<div class="column center aligned">
 			<h2 class="ui teal image header">
 				<img src="/assets/imgs/logo.png" class="image">

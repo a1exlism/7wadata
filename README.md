@@ -7,7 +7,7 @@ This is a Single Page application.
 file structure
 front-end:~~[Reference](https://segmentfault.com/a/1190000005969488)
 React + Webpack + antsUI~~
-UI - Semantic.js
+UI - Bootstrap.js
 Network - Axios.js / fetch
 
 back-end:

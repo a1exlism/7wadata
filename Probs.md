@@ -10,3 +10,7 @@
 5. [CodeIgniter BASEPATH](http://stackoverflow.com/questions/26990196/codeigniter-basepath)
 
 6. user/ 和 admin/ session冲突, 更改admin session其中一个字段为admin_id
+
+7. [controller层向view层传值](http://stackoverflow.com/questions/12294527/passing-variable-from-controller-to-view-in-codeigniter)
+
+8. excel with [js-xlsx](https://github.com/SheetJS/js-xlsx)

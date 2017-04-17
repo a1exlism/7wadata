@@ -18,7 +18,7 @@ $(function () {
 					$('form').addClass('success');
 					$('#msg_success').append('<span>登录成功</span>');
 					setTimeout(function () {
-						window.location.replace('/user/main');
+						window.location.replace('/user/analysis');
 					}, 200);
 				} else {
 					$('form').addClass('error');

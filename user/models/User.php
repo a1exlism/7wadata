@@ -23,4 +23,6 @@ class User extends CI_Model
 			'password' => md5(sha1($pass . $this->salt))
 		));
 	}
+	
+	
 }

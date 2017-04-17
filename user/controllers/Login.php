@@ -11,7 +11,7 @@ class Login extends MY_Controller
 	public function index()
 	{
 		if ($this->session_check() == 1) {
-			redirect('/user/main', 'location', 301);
+			redirect('/user/analysis', 'location', 301);
 		}
 		$this->load->view('user/login');
 	}
@@ -40,5 +40,11 @@ class Login extends MY_Controller
 		}
 		
 		echo json_encode($res);
+	}
+	
+	public function logout()
+	{
+		session_destroy();
+		redirect('/user/login', 'refresh', 301);
 	}
 }
