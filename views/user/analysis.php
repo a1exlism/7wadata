@@ -12,16 +12,10 @@
 <div id="main" class="col-md-10 container">
 	<div class="row">
 		<h1 class="text-center">数据分析 | 项目A</h1>
-		<!--Output Format:
-				<select class="select" name="format" onchange="setfmt()">
-					<option value="json" selected> JSON</option>
-					<option value="csv"> CSV</option>
-					<option value="form"> FORMULAE</option>
-				</select><br/> -->
+		<?php var_dump($use_type);?>
 		<div id="drop">Drop a spreadsheet file here to see sheet data</div>
 		<p><input type="file" name="xlfile" id="xlf"/> ... or click here to select a file</p>
 		<a href="#" class="btn btn-default btn-sm" id="db_insert">插入数据库/pre显示</a>
 		<pre id="out"></pre>
-	
 	</div>
 </div>

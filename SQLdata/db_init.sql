@@ -29,17 +29,22 @@ CREATE TABLE data_query (
   CHARACTER SET = utf8;
 
 # projects manager
+# 一个project 多张表
 CREATE TABLE projs (
   proj_id  INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user_id  INT UNSIGNED NOT NULL,
-  excel_id INT UNSIGNED NOT NULL
+  excel_id VARCHAR(10) NOT NULL,
+  type     INT UNSIGNED NOT NULL
 )
   CHARACTER SET = utf8;
 
-# excel
-CREATE TABLE excels (
-  exc_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
-);
+# excels demo 动态创建的表给命名1,2,....
+# CREATE TABLE excel_id (
+#   income_side  INT,
+#   expense_side INT,
+#   amount       INT
+# )
+#   CHARACTER SET = utf8;
 
 # privileges
 CREATE TABLE user_privilege (

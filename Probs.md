@@ -14,3 +14,7 @@
 7. [controller层向view层传值](http://stackoverflow.com/questions/12294527/passing-variable-from-controller-to-view-in-codeigniter)
 
 8. excel with [js-xlsx](https://github.com/SheetJS/js-xlsx)
+
+9. 设置自定义配置文件 /user/config/use_type.php
+[refer](http://codeigniter.org.cn/user_guide/libraries/config.html)
+最后打算放在core自定义的controller中进行加载(少一步)
