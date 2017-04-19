@@ -31,15 +31,18 @@ CREATE TABLE data_query (
 # projects manager
 # 一个project 多张表
 CREATE TABLE projs (
-  proj_id  INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id       INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  proj_id  INT UNSIGNED NOT NULL,
   user_id  INT UNSIGNED NOT NULL,
-  excel_id VARCHAR(10) NOT NULL,
+  excel_id VARCHAR(10)  NOT NULL,
   type     INT UNSIGNED NOT NULL
 )
   CHARACTER SET = utf8;
 
 # excels demo 动态创建的表给命名1,2,....
+# excel_id = user_id.'_'.proj_id.'_'.ExcelNO;
 # CREATE TABLE excel_id (
+#   id INT AUTO_INCREMENT PRIMARY KEY ,
 #   income_side  INT,
 #   expense_side INT,
 #   amount       INT

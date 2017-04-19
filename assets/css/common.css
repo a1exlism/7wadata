@@ -75,6 +75,11 @@ html, body {
 	overflow: hidden;
 }
 
+#nav-left .projects .proj a{
+	color: #fff;
+}
+
+
 #proj-add {
 	margin-top: 2em;
 }

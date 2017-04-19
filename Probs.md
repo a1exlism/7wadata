@@ -18,3 +18,5 @@
 9. 设置自定义配置文件 /user/config/use_type.php
 [refer](http://codeigniter.org.cn/user_guide/libraries/config.html)
 最后打算放在core自定义的controller中进行加载(少一步)
+
+10. Session中的user_id 实际上为username
