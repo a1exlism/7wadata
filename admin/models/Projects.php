@@ -23,7 +23,7 @@ class Projects extends CI_Model
 	{
 		//		开启权限
 		$data = array(
-			'is_' . $auth => 1
+			$auth => 1
 		);
 		$this->db->where(array(
 			'proj_id' => $proj_id,
@@ -36,7 +36,7 @@ class Projects extends CI_Model
 	{
 		//		禁用权限
 		$data = array(
-			'is_' . $auth => 0
+			$auth => 0
 		);
 		$this->db->where(array(
 			'proj_id' => $proj_id,
