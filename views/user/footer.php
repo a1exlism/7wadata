@@ -10,10 +10,10 @@
 		</div>
 	</div>
 </footer>
-<?php if (preg_match('/analysis/i', $_SERVER['PHP_SELF'])) {
+<?php if (preg_match('/upexcel/i', $_SERVER['PHP_SELF'])) {
 	echo "<script src='/assets/3rd/xlsx/xlsx.full.min.js'></script>"; //  excel
 	echo "<script src='/assets/3rd/xlsx/shim.js'></script>";  //  low IE version
-	echo "<script src='/assets/js/user/analysis.js'></script>";
+	echo "<script src='/assets/js/user/upexcel.js'></script>";
 }?>
 <script src="/assets/3rd/jquery.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>

@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Analysis extends MY_Controller
+class Upexcel extends MY_Controller
 {
 	
 	public function index()
@@ -18,7 +18,7 @@ class Analysis extends MY_Controller
 			'username' => $this->session->userdata('user_id'),
 			'use_type' => $use_type
 		));
-		$this->load->view('user/analysis');
+		$this->load->view('user/upexcel');
 		$this->load->view('user/footer');
 	}
 }

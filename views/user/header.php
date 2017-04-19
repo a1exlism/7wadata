@@ -22,13 +22,13 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">7娃数据</a>
+			<span class="navbar-brand">7娃数据</span>
 		</div>
 		
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="/user/analysis">数据分析<span class="sr-only">(current)</span></a></li>
-				<li><a href="#">Link</a></li>
+				<li class="active"><a href="/user/upexcel">数据入库<span class="sr-only">(current)</span></a></li>
+				<li class=""><a href="/user/analysis">数据分析<span class="sr-only">(current)</span></a></li>
 			
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
