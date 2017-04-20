@@ -1,0 +1,68 @@
+/*
+
+	INSTRUCTIONS ---------------------------------------------------------------------------------
+  
+  1. link this stylesheet in the head of your HTML
+  	 <link href="YOUR PATH/darken.css" rel="stylesheet" type="text/css" />
+     
+  2. Set the file name as data-theme attribute on your input
+  	 <input data-theme="darken" />
+     
+  3. That's it!
+  
+  When you run script the style will be automatically applied.
+
+*/
+div.datedropper.darken {
+  border-radius: 0px;
+  width: 180px;
+}
+div.datedropper.darken .picker {
+  border-radius: 0px;
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.25);
+}
+div.datedropper.darken .pick-l {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+div.datedropper.darken:before,
+div.datedropper.darken .pick-submit,
+div.datedropper.darken .pick-lg-b .pick-sl:before,
+div.datedropper.darken .pick-m,
+div.datedropper.darken .pick-lg-h {
+  background-color: #4a9dff;
+}
+div.datedropper.darken .pick-y.pick-jump,
+div.datedropper.darken .pick li span,
+div.datedropper.darken .pick-lg-b .pick-wke,
+div.datedropper.darken .pick-btn {
+  color: #4a9dff;
+}
+div.datedropper.darken .picker,
+div.datedropper.darken .pick-l {
+  background-color: #fff;
+}
+div.datedropper.darken .picker,
+div.datedropper.darken .pick-arw,
+div.datedropper.darken .pick-l {
+  color: ##3d80cf;
+}
+div.datedropper.darken .pick-m,
+div.datedropper.darken .pick-m .pick-arw,
+div.datedropper.darken .pick-lg-h,
+div.datedropper.darken .pick-lg-b .pick-sl,
+div.datedropper.darken .pick-submit {
+  color: #fff;
+}
+div.datedropper.darken.picker-tiny:before,
+div.datedropper.darken.picker-tiny .pick-m {
+  background-color: #fff;
+}
+div.datedropper.darken.picker-tiny .pick-m,
+div.datedropper.darken.picker-tiny .pick-m .pick-arw {
+  color: ##3d80cf;
+}
+div.datedropper.darken.picker-lkd .pick-submit {
+  background-color: #fff;
+  color: ##3d80cf;
+}

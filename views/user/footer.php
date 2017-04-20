@@ -19,6 +19,9 @@
 	echo "<script src='/assets/3rd/xlsx/shim.js'></script>";  //  low IE version
 	echo "<script src='/assets/js/user/upexcel.js'></script>";
 } ?>
-
+<?php if (preg_match('/query/i', $_SERVER['PHP_SELF'])) {
+	echo "<script src='/assets/3rd/datedropper3/datedropper.min.js'></script>";
+	echo "<script src='/assets/js/user/query.js'></script>";
+} ?>
 </body>
 </html>

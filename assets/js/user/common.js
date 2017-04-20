@@ -18,7 +18,7 @@ $(function () {
 		}
 		//  header active
 	});
-	var tagName = /user\/(.*)#*$/.exec(window.location.href)[1];
+	var tagName = /user\/(.*)((\/project\/)?.*$)/.exec(window.location.href)[1].split('/')[0];
 	var headerLi = $('#header-tags > li');
 	headerLi.each(function (index) {
 		if (new RegExp(tagName).test($(this).children().attr('href'))) {
