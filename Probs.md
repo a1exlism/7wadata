@@ -20,3 +20,10 @@
 最后打算放在core自定义的controller中进行加载(少一步)
 
 10. Session中的user_id 实际上为username
+
+11. 日期控件[datedropper](http://felicegattuso.com/projects/datedropper/) with jQuery
+
+12. \[42000\]\[1067\] Invalid default value for 'gmt_modify'
+[about time](http://stackoverflow.com/questions/9192027/invalid-default-value-for-create-date-timestamp-field)
+
+13. [js return timestamp](http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript)

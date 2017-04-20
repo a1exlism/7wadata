@@ -12,26 +12,29 @@ class Upexcel extends MY_Controller
 		
 		$this->load->model('excels');
 		$this->load->model('user');
+		$this->load->model('projects');
+		
 		$this->user_id = $this->user->get_user_id($this->session->userdata('user_id'));
-	}
-	
-	public function index()
-	{
-		$this->project();
-	}
-	
-	public function project($proj_no = 1)
-	{
-		$use_type = $this->config->item('use_type');
-		$proj_nums = $this->get_projs_nums();
-		if ($proj_no > $proj_nums) {
-			$proj_no = 1;
-		}
 		
 		if ($this->session_check() != 1) {
 			echo '认证失败, 请重新登录';
 			sleep(0.3);
 			redirect('/user/login', 'location', 301);
+		}
+	}
+	
+	public function index($proj_no = 1)
+	{
+		$this->project($proj_no);
+	}
+	
+	public function project($proj_no = 1)
+	{
+		$use_type = $this->config->item('use_type');
+		
+		$proj_nums = $this->get_proj_nums();
+		if ($proj_no > $proj_nums) {
+			$proj_no = 1;
 		}
 		
 		$this->load->view('user/header', array(
@@ -47,7 +50,7 @@ class Upexcel extends MY_Controller
 	
 	public function test()
 	{
-		echo $this->excels->get_excel_nums($this->user_id, 1);
+		echo $this->projects->get_excel_nums($this->user_id, 1);
 //		$values = json_decode($this->input->post('table'));
 //		$keys = [];
 //		$orders = array(
@@ -68,8 +71,8 @@ class Upexcel extends MY_Controller
 	
 	public function new_proj()
 	{
-		$new_proj_id = $this->get_projs_nums() + 1;
-		$this->excels->projs_new(array(
+		$new_proj_id = $this->get_proj_nums() + 1;
+		$this->projects->projs_new(array(
 			'user_id' => $this->user_id,
 			'proj_id' => $new_proj_id,
 			'excel_id' => $this->user_id . '_' . $new_proj_id . '_1'
@@ -77,9 +80,9 @@ class Upexcel extends MY_Controller
 		redirect('/user/upexcel/project/' . $new_proj_id, 'location');
 	}
 	
-	public function get_projs_nums()
+	public function get_proj_nums()
 	{
-		return $this->excels->proj_nums($this->user_id);
+		return $this->projects->proj_nums($this->user_id);
 	}
 	
 	public function excel_create()
@@ -93,18 +96,18 @@ class Upexcel extends MY_Controller
 		$values = json_decode($this->input->post('table'));
 		$proj_id = $this->input->post('proj_id');
 		
-		$excel_nums = $this->excels->get_excel_nums($this->user_id, $proj_id);
+		$excel_nums = $this->projects->get_excel_nums($this->user_id, $proj_id);
 		
 		$table_name = $this->user_id . '_' . $proj_id . '_' . ($excel_nums + 1);
 		
 		//  配置projs表
 		if ($excel_nums == 0) {
 			//  第1个excel
-			$this->excels->projs_complete($table_name, $type); //  补全表信息
+			$this->projects->projs_complete($table_name, $type); //  补全表信息
 		} else {
 			//  第2+的excel
 			//  建立新表信息
-			$this->excels->projs_new(array(
+			$this->projects->projs_new(array(
 				'proj_id' => $proj_id,
 				'user_id' => $this->user_id,
 				'excel_id' => $table_name,

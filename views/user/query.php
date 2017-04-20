@@ -24,6 +24,8 @@
 							       data-large-default="true"
 							       id="startDate"
 							       autocomplete="off">
+							<!-- Real input -->
+							<input type="hidden" name="startDate" value="">
 						</div>
 						<label for="endDate" class="col-sm-1 control-label">至</label>
 						<div class="col-sm-3">
@@ -34,30 +36,32 @@
 							       data-large-default="true"
 							       id="endDate"
 							       autocomplete="off">
+							<!-- Real input -->
+							<input type="hidden" name="endDate" value="">
 						</div>
 						<label for="location" class="col-sm-1 control-label">城市/地区:</label>
 						<div class="col-sm-3">
-							<input type="text" class="form-control input-sm" id="location" autocomplete="off">
+							<input type="text" class="form-control input-sm" name="location" autocomplete="off">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="qq" class="col-sm-1 control-label">QQ:</label>
 						<div class="col-sm-3">
-							<input type="text" class="form-control input-sm" id="qq" autocomplete="off">
+							<input type="text" class="form-control input-sm" name="qq" autocomplete="off">
 						</div>
 						<label for="wechat" class="col-sm-1 control-label">微信</label>
 						<div class="col-sm-3">
-							<input type="text" class="form-control input-sm" id="wechat" autocomplete="off">
+							<input type="text" class="form-control input-sm" name="wechat" autocomplete="off">
 						</div>
 						<label for="goods-type" class="col-sm-1 control-label">类型:</label>
 						<div class="col-sm-3 select-sm">
-							<select class="form-control input-sm" id="goods-type">
-								<!-- todo: 对应一个defined.php -->
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
+							<select name="search-type" class="form-control input-sm" id="goods-type">
+								<option value=""></option>
+								<?php
+								foreach ($search_type as $key => $val) {
+									echo "<option value='$val'>$key</option>";
+								}
+								?>
 							</select>
 							<br>
 						</div>
@@ -66,13 +70,13 @@
 					<div class="form-group">
 						<label for="keyword" class="col-sm-1 control-label">关键词</label>
 						<div class="col-sm-11">
-							<input type="text" class="form-control input-sm" id="keyword" autocomplete="off">
+							<input type="text" class="form-control input-sm" name="keyword" autocomplete="off">
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-6 col-sm-offset-4">
 							<button type="reset" class="btn btn-default">条件重置</button>
-							<button type="button" class="btn btn-primary">查询</button>
+							<button type="button" id="search" class="btn btn-primary">查询</button>
 						</div>
 					</div>
 				</fieldset>

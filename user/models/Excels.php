@@ -10,8 +10,6 @@ class Excels extends CI_Model
 		$this->load->dbforge();
 	}
 	
-
-	
 	public function create_table($table_name, $tables)
 	{
 		/*
