@@ -100,7 +100,7 @@ var globalOutput;
 function process_wb(wb) {
 	global_wb = wb;
 	globalOutput = JSON.stringify(to_json(wb), null, 2);
-
+	
 	if (typeof console !== 'undefined')
 		console.log("output", new Date());
 }
@@ -130,6 +130,9 @@ function handleDrop(e) {
 				}
 				process_wb(wb);
 			}
+			//  add file name
+			$('.fullFileName').text(f.name);
+			console.log("input tag: " + f.name);
 		};
 		if (rABS)
 			reader.readAsBinaryString(f);
@@ -174,6 +177,9 @@ function handleFile(e) {
 				}
 				process_wb(wb);
 			}
+			//  add file name
+			$('.fullFileName').text(f.name);
+			console.log("drop tag: " + f.name);
 		};
 		if (rABS)
 			reader.readAsBinaryString(f);
@@ -195,3 +201,36 @@ document.querySelector('#db_insert').addEventListener('click', function () {
 
 //  output
 // console.log(globalOutput);
+
+//  表单提交
+//  添加表单数据
+
+$('#form-submit').click(function () {
+	$('#msg').empty();
+	var tables = '';
+	var tmp = JSON.parse(globalOutput);
+	for (var i in tmp) {
+		tables = tmp[i];
+	}
+	$('#table').val(JSON.stringify(tables));
+	$.ajax({
+		type: "POST",
+		url: '/user/upexcel/excel_create',
+		data: $('#form-upload').serialize(),
+		async: false,
+		success: function (data) {
+			$('#msg').text('入库成功');
+			setTimeout(function () {
+				$('#msg').empty();
+			}, 800);
+		},
+		error: function (data) {
+			$('#msg').text('操作失败, 请重试');
+			setTimeout(function () {
+				$('#msg').empty();
+			}, 800);
+		}
+	});
+	globalOutput = ''; //重置
+	$('.fullFileName').empty();
+});

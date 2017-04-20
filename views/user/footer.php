@@ -1,4 +1,4 @@
-	</div>
+</div>
 </div>
 
 <footer class="footer">
@@ -10,15 +10,15 @@
 		</div>
 	</div>
 </footer>
+
+<script src="/assets/3rd/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/js/user/common.js"></script>
 <?php if (preg_match('/upexcel/i', $_SERVER['PHP_SELF'])) {
 	echo "<script src='/assets/3rd/xlsx/xlsx.full.min.js'></script>"; //  excel
 	echo "<script src='/assets/3rd/xlsx/shim.js'></script>";  //  low IE version
 	echo "<script src='/assets/js/user/upexcel.js'></script>";
-}?>
-<script src="/assets/3rd/jquery.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/js/user/common.js"></script>
-
+} ?>
 
 </body>
 </html>

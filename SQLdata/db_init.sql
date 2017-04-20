@@ -30,12 +30,13 @@ CREATE TABLE data_query (
 
 # projects manager
 # 一个project 多张表
+# type 默认为 0 用来判断excel数
 CREATE TABLE projs (
   id       INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  proj_id  INT UNSIGNED NOT NULL,
   user_id  INT UNSIGNED NOT NULL,
+  proj_id  INT UNSIGNED NOT NULL,
   excel_id VARCHAR(10)  NOT NULL,
-  type     INT UNSIGNED NOT NULL
+  type     INT UNSIGNED DEFAULT 0
 )
   CHARACTER SET = utf8;
 

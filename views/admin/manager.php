@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="container">
 	<div class="row">
 		<div class="col-md-offset-1 col-md-10">
-			<h1 class="text-center">Manager Header</h1>
+			<h1 class="text-center">后台管理页面</h1>
 			<table class="table table-hover">
 				<thead>
 				<tr>

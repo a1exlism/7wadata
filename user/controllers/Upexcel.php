@@ -4,15 +4,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Upexcel extends MY_Controller
 {
+	private $user_id;
 	
 	public function __construct()
 	{
 		parent::__construct();
 		
 		$this->load->model('excels');
+		$this->load->model('user');
+		$this->user_id = $this->user->get_user_id($this->session->userdata('user_id'));
 	}
 	
-	public function index($proj_no = 1)
+	public function index()
+	{
+		$this->project();
+	}
+	
+	public function project($proj_no = 1)
 	{
 		$use_type = $this->config->item('use_type');
 		$proj_nums = $this->get_projs_nums();
@@ -37,15 +45,83 @@ class Upexcel extends MY_Controller
 		$this->load->view('user/footer');
 	}
 	
-	public function new_proj() {
+	public function test()
+	{
+		echo $this->excels->get_excel_nums($this->user_id, 1);
+//		$values = json_decode($this->input->post('table'));
+//		$keys = [];
+//		$orders = array(
+//			'expense_side' => 3,
+//			'income_side' => 2,
+//			'amount' => 1
+//		);
+//		foreach ($values[0] as $key => $val) {
+//			array_push($keys, $key);
+//		}
+//		foreach ($values as $k => $vals) {
+//			$tmp_arr = get_object_vars($vals);
+//			echo $tmp_arr[$keys[$orders['expense_side']-1]];
+//			echo $vals[$keys[$orders['income_side']-1]];
+//			echo $vals[$keys[$orders['amount']-1]];
+//		}
+	}
 	
+	public function new_proj()
+	{
+		$new_proj_id = $this->get_projs_nums() + 1;
+		$this->excels->projs_new(array(
+			'user_id' => $this->user_id,
+			'proj_id' => $new_proj_id,
+			'excel_id' => $this->user_id . '_' . $new_proj_id . '_1'
+		));
+		redirect('/user/upexcel/project/' . $new_proj_id, 'location');
 	}
 	
 	public function get_projs_nums()
 	{
-		$username = $this->session->userdata('user_id');
-		return $this->excels->proj_nums($username);
+		return $this->excels->proj_nums($this->user_id);
 	}
 	
-	
+	public function excel_create()
+	{
+		//  创建excel表 涉及数据库: new table, projs
+		//  form data
+		$type = $this->input->post('type');
+		$expense_side = $this->input->post('expense_side');
+		$income_side = $this->input->post('income_side');
+		$amount = $this->input->post('amount');
+		$values = json_decode($this->input->post('table'));
+		$proj_id = $this->input->post('proj_id');
+		
+		$excel_nums = $this->excels->get_excel_nums($this->user_id, $proj_id);
+		
+		$table_name = $this->user_id . '_' . $proj_id . '_' . ($excel_nums + 1);
+		
+		//  配置projs表
+		if ($excel_nums == 0) {
+			//  第1个excel
+			$this->excels->projs_complete($table_name, $type); //  补全表信息
+		} else {
+			//  第2+的excel
+			//  建立新表信息
+			$this->excels->projs_new(array(
+				'proj_id' => $proj_id,
+				'user_id' => $this->user_id,
+				'excel_id' => $table_name,
+				'type' => $type
+			));
+		}
+		//  创建数据库
+//		echo $table_name;
+		$this->excels->create_table($table_name, array(
+			'expense_side' => $expense_side,
+			'income_side' => $income_side,
+			'amount' => $amount,
+			'values' => $values
+		));
+		
+		echo json_encode(array(
+			'status' => 1
+		));
+	}
 }

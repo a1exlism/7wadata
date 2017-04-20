@@ -11,7 +11,7 @@ class Login extends MY_Controller
 	public function index()
 	{
 		if ($this->session_check() == 1) {
-			redirect('/user/upexcel', 'location', 301);
+			redirect('/user/upexcel/project', 'location', 301);
 		}
 		$this->load->view('user/login');
 	}

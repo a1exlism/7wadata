@@ -7,11 +7,11 @@ $('#nav-toggle').click(function(e) {
 	} else {
 		$(this).text('隐藏侧边栏');
 	}
-	if(divMain.hasClass('col-md-10')) {
-		divMain.removeClass('col-md-10').addClass('col-md-12');
+	if(divMain.hasClass('col-sm-10')) {
+		divMain.removeClass('col-sm-10').addClass('col-sm-12');
 		divLeft.hide();
 	} else {
-		divMain.removeClass('col-md-12').addClass('col-md-10');
+		divMain.removeClass('col-sm-12').addClass('col-sm-10');
 		divLeft.show();
 	}
 });

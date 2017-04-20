@@ -20,6 +20,10 @@ back-end:
 SQL Init:  
   SQLdata/  about database
 
+### 需求更新
+权限应该是指操作的功能，不是指mysql的权限
+比如能否上传，能否查询，能否使用可视化分析工具
+
 ## file tree likes
 [CodeIgniter+React](http://stackoverflow.com/questions/30504206/codeigniter-and-react-js-setup)
 [SPA-file-structure](https://segmentfault.com/a/1190000005969488)

@@ -41,6 +41,9 @@ html, body {
 	padding-right: 0;
 }
 
+.brand-logo {
+	display: inline-block;
+}
 /*
  *  ---- main body ---
  */
@@ -50,8 +53,8 @@ html, body {
 */
 
 #nav-left {
-	margin-bottom: -2000px;
-	padding-bottom: 2000px;
+	margin-bottom: -4000px;
+	padding-bottom: 4000px;
 	background-color: #333;
 	color: #fff;
 	overflow-y: hidden;
@@ -75,10 +78,9 @@ html, body {
 	overflow: hidden;
 }
 
-#nav-left .projects .proj a{
+#nav-left .projects .proj a {
 	color: #fff;
 }
-
 
 #proj-add {
 	margin-top: 2em;
@@ -108,6 +110,30 @@ html, body {
 #b64data {
 	/*width: 100%;*/
 }
+
+.file-upload {
+	display: block;
+	position: relative;
+	float: left;
+	width: 75px;
+	height: 36px;
+}
+
+.file-upload span {
+	display: inline-block;
+}
+
+.file-upload .input-hidden {
+	position: absolute;
+	display: inline-block !important;
+	top: 0;
+	left: 0;
+	width: 75px;
+	height: 36px;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
 
 /*
  * footer

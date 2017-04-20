@@ -22,7 +22,9 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<span class="navbar-brand">7娃数据</span>
+			<span class="navbar-brand" style="padding:6.5px;">
+				<img class="brand-logo" width="32" height="32" src="/assets/imgs/logo.png" alt=""></span>
+			<span class="navbar-brand"> 7娃数据 </span>
 		</div>
 		
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -48,5 +50,5 @@
 	</div>
 </nav>
 
-<div class="container-fluid">
+<div class="container-fluid" style="margin-bottom: 10%;">
 	<div class="row">

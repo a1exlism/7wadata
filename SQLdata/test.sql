@@ -3,24 +3,18 @@ USE wadataco_7wadata;
 # user_id: 1 excel no: 1
 CREATE TABLE 1_1_1 (
   id           INT AUTO_INCREMENT PRIMARY KEY,
-  income_side  INT,
-  expense_side INT,
+  income_side  VARCHAR(40),
+  expense_side VARCHAR(40),
   amount       INT
 )
   CHARACTER SET = utf8;
 
-CREATE TABLE 1_2_1 (
-  id           INT AUTO_INCREMENT PRIMARY KEY,
-  income_side  INT,
-  expense_side INT,
-  amount       INT
-)
-  CHARACTER SET = utf8;
+
 
 CREATE TABLE 2_1_1 (
   id           INT AUTO_INCREMENT PRIMARY KEY,
-  income_side  INT,
-  expense_side INT,
+  income_side  VARCHAR(40),
+  expense_side VARCHAR(40),
   amount       INT
 )
   CHARACTER SET = utf8;

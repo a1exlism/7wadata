@@ -24,5 +24,11 @@ class User extends CI_Model
 		));
 	}
 	
+	public function get_user_id($username)
+	{
+		$user_id = $this->db->query('SELECT user_id FROM users WHERE username = "' . $username . '"')->row()->user_id;
+		return $user_id;
+	}
+	
 	
 }
