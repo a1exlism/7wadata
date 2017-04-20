@@ -12,8 +12,8 @@ CREATE TABLE users (
 
 # data query field
 CREATE TABLE data_query (
-  id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  type       INT UNSIGNED NOT NULL,
+  id         INT UNSIGNED                            NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  type       INT UNSIGNED                            NOT NULL,
   city       VARCHAR(20),
   qq         INT UNSIGNED,
   weixin     VARCHAR(25),
@@ -21,10 +21,10 @@ CREATE TABLE data_query (
   phone      INT UNSIGNED,
   real_name  VARCHAR(25),
   id_card    VARCHAR(19),
-  content    TEXT         NOT NULL,
-  source_url VARCHAR(70)  NOT NULL,
-  gmt_create DATETIME     NOT NULL,
-  gmt_modify DATETIME     NOT NULL
+  content    TEXT                                    NOT NULL,
+  source_url VARCHAR(70)                             NOT NULL,
+  gmt_create TIMESTAMP DEFAULT '1970-01-01 00:00:01' NOT NULL,
+  gmt_modify TIMESTAMP DEFAULT '1970-01-01 00:00:01' NOT NULL
 )
   CHARACTER SET = utf8;
 
@@ -36,7 +36,7 @@ CREATE TABLE projs (
   user_id  INT UNSIGNED NOT NULL,
   proj_id  INT UNSIGNED NOT NULL,
   excel_id VARCHAR(10)  NOT NULL,
-  type     INT UNSIGNED DEFAULT 0
+  type     INT UNSIGNED          DEFAULT 0
 )
   CHARACTER SET = utf8;
 
