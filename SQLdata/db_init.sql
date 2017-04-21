@@ -65,5 +65,5 @@ CREATE TABLE user_privilege (
 
 # add an Admin by default (only one)
 INSERT INTO users (username, password, is_admin) VALUE (
-  'root_admin', '116bcf2f16ee7e433226af275a679caf', 1
+  'root_admin', 'd667ede05ea3254fe70ccfe0a3963099', 1
 );

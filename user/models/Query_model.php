@@ -49,13 +49,19 @@ class Query_model extends CI_Model
 	
 	public function city_top10_qq()
 	{
-		$this->db->select(['qq', 'wexin', 'city']);
-		$this->db->order_by('qq');
+		$this->db->select(['qq', 'city']);
+		$this->db->order_by('qq', 'DESC');
+		$this->db->limit(10);
+		$query = $this->db->get('data_query');
+		return $query;
 	}
 	
 	public function city_top10_weixin()
 	{
-		$this->db->select(['qq', 'wexin', 'city']);
-		$this->db->order_by('weixin');
+		$this->db->select(['weixin', 'city']);
+		$this->db->order_by('weixin', 'DESC');
+		$this->db->limit(10);
+		$query = $this->db->get('data_query');
+		return $query;
 	}
 }

@@ -172,7 +172,8 @@ html, body {
 * analysis echarts
 */
 .echarts {
-	height: 400px;
+	width: 100%;
+	height: 450px;
 	padding-top: 10px;
 }
 
