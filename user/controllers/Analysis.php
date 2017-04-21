@@ -13,6 +13,7 @@ class Analysis extends MY_Controller
 			sleep(0.3);
 			redirect('/user/login', 'location', 301);
 		}
+		$this->load->model('query_model');
 	}
 	
 	public function index()
@@ -25,5 +26,8 @@ class Analysis extends MY_Controller
 		$this->load->view('user/footer');
 	}
 	
-	
+	public function get_incremental()
+	{
+		echo json_encode($this->query_model->get_incremental()->result());
+	}
 }

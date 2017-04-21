@@ -14,17 +14,17 @@ CREATE TABLE users (
 CREATE TABLE data_query (
   id         INT UNSIGNED                            NOT NULL AUTO_INCREMENT PRIMARY KEY,
   type       INT UNSIGNED                            NOT NULL,
-  city       VARCHAR(20),
-  qq         INT UNSIGNED,
+  city       VARCHAR(25),
+  qq         VARCHAR(20),
   weixin     VARCHAR(25),
-  mobile     INT UNSIGNED,
-  phone      INT UNSIGNED,
+  mobile     CHAR(11),
+  phone      VARCHAR(16),
   real_name  VARCHAR(25),
-  id_card    VARCHAR(19),
+  id_card    VARCHAR(25),
   content    TEXT                                    NOT NULL,
-  source_url VARCHAR(70)                             NOT NULL,
-  gmt_create TIMESTAMP DEFAULT '1970-01-01 00:00:01' NOT NULL,
-  gmt_modify TIMESTAMP DEFAULT '1970-01-01 00:00:01' NOT NULL
+  source_url VARCHAR(2048)                           NOT NULL,
+  gmt_create TIMESTAMP DEFAULT '1971-01-01 00:00:02' NOT NULL,
+  gmt_modify TIMESTAMP DEFAULT '1971-01-01 00:00:03' NOT NULL
 )
   CHARACTER SET = utf8;
 

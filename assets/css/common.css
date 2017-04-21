@@ -44,12 +44,16 @@ html, body {
 .brand-logo {
 	display: inline-block;
 }
+
 /*
  *  ---- main body ---
  */
+#main {
+	padding-top: 1em;
+}
 
 /*
- * Analysis
+ * Navbar left
 */
 
 #nav-left {
@@ -92,6 +96,21 @@ html, body {
 	border: solid 1px #fff;
 }
 
+/* left nav ul */
+#nav-ul a {
+	color: #fff;
+}
+
+#nav-ul .list-group-item {
+	background: #333;
+	border: 0;
+}
+
+#nav-ul .active {
+	background-color: #469bcd;
+	color: #fff;
+}
+
 /*
  excel
 */
@@ -107,9 +126,9 @@ html, body {
 	color: #bbb
 }
 
-#b64data {
-	/*width: 100%;*/
-}
+/*#b64data {*/
+/*width: 100%;*/
+/*}*/
 
 .file-upload {
 	display: block;
@@ -148,6 +167,15 @@ html, body {
 #query-conditions .select-sm {
 	height: 36px;
 }
+
+/*
+* analysis echarts
+*/
+.echarts {
+	height: 400px;
+	padding-top: 10px;
+}
+
 /*
  * footer
  */

@@ -11,13 +11,14 @@
 <div id="main" class="col-sm-10 container">
 	<div class="row">
 		<div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-10 col-lg-offset-2 col-lg-8">
-			<form id="query-conditions" class="form-horizontal" style="padding-top: 15px;">
+			<form method="post" action="/user/query" id="query-conditions" class="form-horizontal" style="padding-top: 15px;">
 				<fieldset>
 					<legend>查询条件:</legend>
 					<div class="form-group">
 						<label for="startDate" class="col-sm-1 control-label">日期:</label>
 						<div class="col-sm-3">
 							<input type="text" class="form-control input-sm input-datedropper"
+							       data-default-date="02-02-1970"
 							       data-theme="darken"
 							       data-lang="zh"
 							       data-large-mode="true"
@@ -75,12 +76,48 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-6 col-sm-offset-4">
-							<button type="reset" class="btn btn-default">条件重置</button>
+							<button type="reset" id="reset" class="btn btn-default">条件重置</button>
 							<button type="button" id="search" class="btn btn-primary">查询</button>
 						</div>
 					</div>
 				</fieldset>
 			</form>
+		</div>
+		<div class="col-sm-offset-1 col-sm-10">
+			<table class="table table-bordered">
+				<thead>
+				<tr>
+					<?php
+					if (!empty($results)) {
+						
+						foreach ($results[0] as $key => $val) {
+							$header_name = $table_header[$key];
+							if (!empty($header_name)) {
+								echo "<th>$header_name</th>";
+							}
+						}
+					}
+					?>
+				</tr>
+				</thead>
+				<tbody>
+				<?php
+				if (!empty($results)) {
+					foreach ($results as $key => $val) {
+						echo "<tr>";
+						foreach ($val as $k => $v) {
+							if (empty($table_header[$k])) {
+								continue;
+							}
+							echo "<td>$v</td>";
+						}
+						echo "</tr>";
+					}
+				}
+				?>
+				</tbody>
+			</table>
+		
 		</div>
 	</div>
 </div>

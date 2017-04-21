@@ -27,3 +27,6 @@
 [about time](http://stackoverflow.com/questions/9192027/invalid-default-value-for-create-date-timestamp-field)
 
 13. [js return timestamp](http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript)
+
+14. [MySQL5.7+ timestamp invalid default value](http://www.dodobook.net/mysql/3004)
+设置成 '1971-01-01 00:00:01' 即可
