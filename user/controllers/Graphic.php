@@ -48,6 +48,30 @@ class Graphic extends MY_Controller
 		return $this->projects->proj_nums($this->user_id);
 	}
 	
+	public function get_excel_id_arr($proj_id)
+	{
+		$res = $this->projects->get_excel_ids($this->user_id, $proj_id)->result();
+		$arr = [];
+		foreach ($res as $val) {
+			array_push($arr, $val->{'excel_id'});
+		}
+		//	example:	array(4) { [0]=> string(6) "14_1_1" [1]=> string(6) "14_1_2"}
+		return $arr;
+	}
+	
+	public function get_excels_results()
+	{
+		$excel_arr = [];
+		
+	}
+	
+	
+	public function test()
+	{
+		echo "<pre>";
+		var_dump($this->excels->select_excels(['14_1_1', '14_1_2']));
+		echo "</pre>";
+	}
 }
 
 ?>

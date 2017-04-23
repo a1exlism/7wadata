@@ -42,4 +42,15 @@ class Projects extends CI_Model
 		//  $data => array
 		$this->db->insert('projs', $data);
 	}
+	
+	public function get_excel_ids($user_id, $proj_id)
+	{
+		$this->db->select('excel_id');
+		$this->db->where(array(
+			'user_id' => $user_id,
+			'proj_id' => $proj_id
+		));
+		$query = $this->db->get('projs');
+		return $query;
+	}
 }

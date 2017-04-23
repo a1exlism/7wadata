@@ -56,4 +56,21 @@ class Excels extends CI_Model
 			));
 		}
 	}
+	
+	public function select_excels($excel_arr)
+	{
+		$results = array();
+		foreach ($excel_arr as $value) {
+			$results = array_merge($results, $this->select_excel_one($value)->result());
+		}
+		
+		return $results;
+	}
+	
+	public function select_excel_one($excel_id)
+	{
+		$this->db->select('*');
+		$query = $this->db->get($excel_id);
+		return $query;
+	}
 }
