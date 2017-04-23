@@ -38,6 +38,7 @@
 				<li class=""><a href="/user/upexcel">数据入库</a></li>
 				<li class=""><a href="/user/query">数据查询</a></li>
 				<li class=""><a href="/user/analysis">数据分析</a></li>
+				<li class=""><a href="/user/graphic">可视化查询</a></li>
 			
 			</ul>
 			<ul class="nav navbar-nav navbar-right">

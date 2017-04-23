@@ -13,10 +13,6 @@
 					<a class="" href="#top10" data-toggle="tab"
 					   aria-expanded="true" id="getCityTop10"">地区Top10</a>
 				</li>
-				<li class="list-group-item">
-					<a class="" href="#visial" data-toggle="tab"
-					   aria-expanded="false" id="getVisial">可视化查询</a>
-				</li>
 			</ul>
 		</div>
 	</div>
@@ -44,14 +40,7 @@
 						
 						</div>
 					</div>
-					
-					<div id="visial" class="tab-pane fade">
-						<h1 class="echart-header text-center">可视化查询</h1>
-						<div class="echarts">
-						
-						</div>
-					
-					</div>
+				
 				</div>
 			</div>
 		</div>
