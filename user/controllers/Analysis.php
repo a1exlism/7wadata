@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Analysis extends MY_Controller
 {
+	private $user_id;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -13,7 +15,9 @@ class Analysis extends MY_Controller
 			sleep(0.3);
 			redirect('/user/login', 'location', 301);
 		}
+		$this->load->model('user');
 		$this->load->model('query_model');
+		$this->user_id = $this->user->get_user_id($this->session->userdata('user_id'));
 	}
 	
 	public function index()
@@ -21,7 +25,11 @@ class Analysis extends MY_Controller
 		$this->load->view('user/header', array(
 			'username' => $this->session->userdata('user_id')
 		));
-		$this->load->view('user/analysis');
+		if ($this->user->has_privilege($this->user_id, 'is_graphic') != 1) {
+			$this->load->view('user/not_allowed');
+		} else {
+			$this->load->view('user/analysis');
+		}
 		
 		$this->load->view('user/footer');
 	}

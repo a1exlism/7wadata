@@ -192,7 +192,7 @@ $(function () {
 				},
 				tooltip: {},
 				legend: {
-					data: ['QQ']
+					data: ['微信']
 				},
 				xAxis: {
 					type: 'category',
@@ -209,7 +209,7 @@ $(function () {
 				},
 				series: [
 					{
-						name: 'QQ',
+						name: '微信',
 						type: 'bar',
 						barWidth: '50%',
 						data: wechatNum,

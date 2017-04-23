@@ -18,18 +18,3 @@ $config['search_type_reverse'] = array(
 	999 => '其他'
 );
 
-$config['table_header'] = array(
-	'id' => '',
-	'type' => '类型',
-	'city' => '城市/地区',
-	'qq' => 'QQ',
-	'weixin' => '微信',
-	'mobile' => '手机',
-	'phone' => '电话',
-	'real_name' => '姓名',
-	'id_card' => '身份证',
-	'content' => '内容',
-	'source_url' => '源地址',
-	'gmt_create' => '创建时间',
-	'gmt_modify' => '修改时间'
-);

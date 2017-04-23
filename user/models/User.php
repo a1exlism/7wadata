@@ -30,5 +30,17 @@ class User extends CI_Model
 		return $user_id;
 	}
 	
+	public function grant_privilege($user_id)
+	{
+		$this->db->insert('user_privilege', array(
+			'user_id' => $user_id
+		));
+	}
 	
+	public function has_privilege($user_id, $auth) {
+		$this->db->select($auth);
+		$this->db->where('user_id', $user_id);
+		$query = $this->db->get('user_privilege');
+		return $query->row()->$auth;
+	}
 }

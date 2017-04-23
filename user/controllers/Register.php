@@ -38,6 +38,9 @@ class Register extends MY_Controller
 			$res = array(
 				'statusCode' => 1
 			);
+			//  grant privileges
+			$user_id = $this->user->get_user_id($username);
+			$this->user->grant_privilege($user_id);
 		}
 		
 		echo json_encode($res);

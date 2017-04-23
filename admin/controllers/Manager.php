@@ -7,13 +7,13 @@ class Manager extends MY_Controller
 	private $list = array(
 		'user_id' => '用户ID',
 		'username' => '用户名',
-		'proj_id' => '项目ID',
-		'is_create' => 'create',
-		'is_drop' => 'drop',
-		'is_select' => 'select',
-		'is_alter' => 'alter',
-		'is_insert' => 'insert',
-		'is_update' => 'update'
+		'is_upload' => 'Excel上传',
+		'is_query' => '数据查询',
+		'is_graphic' => '图形化查询'
+	);
+	private $trans = array(
+		1 => '有',
+		0 => '无'
 	);
 	
 	public function __construct()
@@ -25,29 +25,30 @@ class Manager extends MY_Controller
 			redirect('/admin/login', 'location', 301);
 		}
 		
-		$this->load->model('projects', 'projs');
+		$this->load->model('privilege');
 	}
 	
 	public function index($user_id = null)
 	{
 		//  todo: 用户筛选, 暂时放一下
 		if (empty($user_id)) {
-			$results = $this->projs->select()->result();
+			$results = $this->privilege->select()->result();
 		} else {
-			$results = $this->projs->select($user_id)->result();
+			$results = $this->privilege->select($user_id)->result();
 		}
 		$this->load->view('/admin/manager', array(
 			'results' => $results,
-			'list' => $this->list
+			'list' => $this->list,
+			'trans' => $this->trans
 		));
 	}
 	
-	public function pri_toggle($val, $proj_id, $user_id, $auth)
+	public function pri_toggle($val, $user_id, $auth_name)
 	{
 		if ($val == 1) {
-			$this->projs->disable($proj_id, $user_id, $auth);
+			$this->privilege->disable($user_id, $auth_name);
 		} else {
-			$this->projs->enable($proj_id, $user_id, $auth);
+			$this->privilege->enable($user_id, $auth_name);
 		}
 	}
 	

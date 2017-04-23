@@ -15,11 +15,14 @@ class Query extends MY_Controller
 			sleep(0.3);
 			redirect('/user/login', 'location', 301);
 		}
+		
+		
 		$this->load->model('user');
 		$this->load->model('projects');
 		$this->load->model('query_model');
-		
 		$this->config->load('search_type');
+		
+		$this->user_id = $this->user->get_user_id($this->session->userdata('user_id'));
 	}
 	
 	public function to_timestamp($unix_time)
@@ -29,15 +32,29 @@ class Query extends MY_Controller
 	
 	public function index()
 	{
-		$search_type = $this->config->item('search_type');
-		$search_type_reverse = $this->config->item('search_type_reverse');
-		$table_header = $this->config->item('table_header');
 		$this->load->view('user/header', array(
 			'username' => $this->session->userdata('user_id'),
 		));
 		
-		//  todo: multi keyword NOT NULL (even just need exploded
-		$results = $this->query_model->search(array(
+		if ($this->user->has_privilege($this->user_id, 'is_query') != 1) {
+			$this->load->view('user/not_allowed');
+		} else {
+			$search_type = $this->config->item('search_type');
+			$search_type_reverse = $this->config->item('search_type_reverse');
+			
+			$this->load->view('user/query', array(
+				'search_type' => $search_type,
+				'search_type_reverse' => $search_type_reverse,
+			));
+		}
+		$this->load->view('user/footer');
+	}
+	
+	public function search($offset_page = 0)
+	{
+		$per_page = 15;
+		$offset = $offset_page * $per_page;
+		$conditions = array(
 			'startDate' => $this->to_timestamp($this->input->post('startDate')),
 			'endDate' => $this->to_timestamp($this->input->post('endDate')),
 			'location' => $this->input->post('location'),
@@ -45,37 +62,52 @@ class Query extends MY_Controller
 			'weixin' => $this->input->post('wechat'),
 			'type' => $this->input->post('search-type'),
 			'keyword' => $this->input->post('keyword')
-		)); //  data是从数据库查询到的数据
+		);
+		$results = $this->query_model->search($conditions, $per_page, $offset)->result();
 		
-		$this->load->view('user/query', array(
-			'search_type' => $search_type,
-			'search_type_reverse' => $search_type_reverse,
-			'table_header' => $table_header,
-			'results' => $results,
-		));
-		
-		$this->load->view('user/footer');
-		
+		echo json_encode($results);
 	}
 	
-//	public function search()
-//	{
-//
-//	}
-	
-	public function test()
+	public function get_search_nums()
 	{
-		//  todo: multi keyword NOT NULL (even just need exploded
-		$results = $this->query_model->search(array(
+		$conditions = array(
 			'startDate' => $this->to_timestamp($this->input->post('startDate')),
 			'endDate' => $this->to_timestamp($this->input->post('endDate')),
 			'location' => $this->input->post('location'),
 			'qq' => $this->input->post('qq'),
-			'wechat' => $this->input->post('wechat'),
+			'weixin' => $this->input->post('wechat'),
 			'type' => $this->input->post('search-type'),
 			'keyword' => $this->input->post('keyword')
-		)); //  data是从数据库查询到的数据
-		
-		var_dump($results);
+		);
+		echo json_encode(array(
+			"nums" => $this->query_model->search_row_num($conditions)
+		));
+	}
+	
+	public function test()
+	{
+//		$results = $this->query_model->search(array(
+//			'startDate' => $this->to_timestamp('2736000'),
+//			'endDate' => $this->to_timestamp('1492790400'),
+//			'location' => $this->input->post('location'),
+//			'qq' => $this->input->post('qq'),
+//			'weixin' => $this->input->post('wechat'),
+//			'type' => $this->input->post('search-type'),
+//			'keyword' => $this->input->post('keyword')
+//		)); //  data是从数据库查询到的数据
+//		$rows_num = 0;
+//		foreach ($results as $key => $val) {
+//			$rows_num++;
+//		}
+//		$this->load->library('pagination');
+//		$config['base_url'] = $_SERVER['PHP_SELF'];
+//		$config['total_rows'] = $rows_num;
+//		$config['per_page'] = 15;
+//		$config['uri_segment'] = 3;
+//		$config['use_page_numbers'] = TRUE;
+//		$config['full_tag_open'] = '<ul class=pagination>';
+//		$config['full_tag_close'] = '</ul>';
+//		$this->pagination->initialize($config);
+//		echo $this->pagination->create_links();
 	}
 }

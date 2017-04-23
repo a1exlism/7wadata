@@ -100,10 +100,10 @@
 							<span id="msg"></span>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group-sm">
 						<input type="hidden" id="proj_id" name="proj_id" value="<?= $present_proj_no; ?>">
 					</div>
-					<div class="form-group">
+					<div class="form-group-sm">
 						<input type="hidden" id="table" name="table" value="">
 					</div>
 				

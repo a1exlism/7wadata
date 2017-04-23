@@ -10,7 +10,7 @@ class Query_model extends CI_Model
 		$this->load->dbforge();
 	}
 	
-	public function search($query_arr)
+	public function search($query_arr, $num, $offset)
 	{
 		foreach ($query_arr as $key => $val) {
 			if (empty($val)) {
@@ -34,8 +34,36 @@ class Query_model extends CI_Model
 					$this->db->where($key, $val);
 			}
 		}
-		$queried = $this->db->get('data_query');
-		return $queried->result();
+		$query = $this->db->get('data_query', $num, $offset);
+		return $query;
+	}
+	
+	public function search_row_num($query_arr)
+	{
+		foreach ($query_arr as $key => $val) {
+			if (empty($val)) {
+				continue;
+			}
+			//  location like keyword like
+			switch ($key) {
+				case 'startDate':
+					$this->db->where('gmt_create >=', $val);
+					break;
+				case 'endDate':
+					$this->db->where('gmt_create <=', $val);
+					break;
+				case 'location':
+					$this->db->like('city', $val, 'both');
+					break;
+				case 'keyword':
+					$this->db->like('content', $val, 'both');
+					break;
+				default:
+					$this->db->where($key, $val);
+			}
+		}
+		$nums = $this->db->count_all_results('data_query');
+		return $nums;
 	}
 	
 	public function get_incremental()

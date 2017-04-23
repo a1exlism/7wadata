@@ -33,14 +33,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						?>
 						<th>
 							<span>
-								<?= $results[$i]->{$key} ?>
+								<?php
+								$val_name = $results[$i]->{$key};
+								if (preg_match('/is_/', $key)) {
+									$val_name = $trans[$val_name];
+								}
+								echo $val_name;
+								?>
 							</span>
 							<?php
 							if (preg_match('/is_/', $key)) {
 								$auth = $key;
 								$url = '/admin/manager/pri_toggle/' .
 									$results[$i]->{$key} . '/' .
-									$results[$i]->{'proj_id'} . '/' .
 									$results[$i]->{'user_id'} . '/' .
 									$key;
 								echo '<span><a url="' . $url . '">更改权限</a></span>';

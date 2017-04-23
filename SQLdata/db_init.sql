@@ -52,18 +52,18 @@ CREATE TABLE projs (
 
 # privileges
 CREATE TABLE user_privilege (
-  id        INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  user_id   INT NOT NULL,
-  proj_id   INT NOT NULL,
-  is_create BOOL         DEFAULT 1,
-  is_drop   BOOL         DEFAULT 1,
-  is_select BOOL         DEFAULT 1,
-  is_alter  BOOL         DEFAULT 1,
-  is_insert BOOL         DEFAULT 1,
-  is_update BOOL         DEFAULT 1
+  id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id    INT NOT NULL,
+  is_upload  BOOL         DEFAULT 1,
+  is_query   BOOL         DEFAULT 1,
+  is_graphic BOOL         DEFAULT 1
 );
 
 # add an Admin by default (only one)
-INSERT INTO users (username, password, is_admin) VALUE (
-  'root_admin', 'd667ede05ea3254fe70ccfe0a3963099', 1
+INSERT INTO users (user_id, username, password, is_admin) VALUE (
+  1, 'root_admin', 'd667ede05ea3254fe70ccfe0a3963099', 1
+);
+
+INSERT INTO user_privilege (user_id) VALUE (
+  1
 );

@@ -21,6 +21,7 @@ class Upexcel extends MY_Controller
 			sleep(0.3);
 			redirect('/user/login', 'location', 301);
 		}
+		
 	}
 	
 	public function index($proj_no = 1)
@@ -43,30 +44,17 @@ class Upexcel extends MY_Controller
 			'proj_nums' => $proj_nums,
 			'present_proj_no' => $proj_no
 		));
-		
-		$this->load->view('user/upexcel');
+		if ($this->user->has_privilege($this->user_id, 'is_upload') != 1) {
+			$this->load->view('user/not_allowed');
+		} else {
+			$this->load->view('user/upexcel');
+		}
 		$this->load->view('user/footer');
 	}
 	
 	public function test()
 	{
-		echo $this->projects->get_excel_nums($this->user_id, 1);
-//		$values = json_decode($this->input->post('table'));
-//		$keys = [];
-//		$orders = array(
-//			'expense_side' => 3,
-//			'income_side' => 2,
-//			'amount' => 1
-//		);
-//		foreach ($values[0] as $key => $val) {
-//			array_push($keys, $key);
-//		}
-//		foreach ($values as $k => $vals) {
-//			$tmp_arr = get_object_vars($vals);
-//			echo $tmp_arr[$keys[$orders['expense_side']-1]];
-//			echo $vals[$keys[$orders['income_side']-1]];
-//			echo $vals[$keys[$orders['amount']-1]];
-//		}
+//		var_dump($this->user->has_privilege($this->user_id, 'is_upload'));
 	}
 	
 	public function new_proj()
