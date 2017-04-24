@@ -37,7 +37,7 @@ class Query extends MY_Controller
 		));
 		
 		if ($this->user->has_privilege($this->user_id, 'is_query') != 1) {
-			$this->load->view('user/not_allowed');
+			$this->load->view('user/error');
 		} else {
 			$search_type = $this->config->item('search_type');
 			$search_type_reverse = $this->config->item('search_type_reverse');

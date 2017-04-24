@@ -45,7 +45,7 @@ class Upexcel extends MY_Controller
 			'present_proj_no' => $proj_no
 		));
 		if ($this->user->has_privilege($this->user_id, 'is_upload') != 1) {
-			$this->load->view('user/not_allowed');
+			$this->load->view('user/error');
 		} else {
 			$this->load->view('user/upexcel');
 		}

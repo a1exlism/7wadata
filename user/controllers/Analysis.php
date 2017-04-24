@@ -26,7 +26,7 @@ class Analysis extends MY_Controller
 			'username' => $this->session->userdata('user_id')
 		));
 		if ($this->user->has_privilege($this->user_id, 'is_graphic') != 1) {
-			$this->load->view('user/not_allowed');
+			$this->load->view('user/error');
 		} else {
 			$this->load->view('user/analysis');
 		}
