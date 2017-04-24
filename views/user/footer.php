@@ -29,5 +29,10 @@ if (preg_match('/analysis/i', $_SERVER['PHP_SELF'])) {
 	echo "<script src='/assets/3rd/echarts.common.min.js'></script>";
 	echo "<script src='/assets/js/user/analysis.js'></script>";
 } ?>
+<?php
+if (preg_match('/graphic/i', $_SERVER['PHP_SELF'])) {
+	echo "<script src='/assets/3rd/d3/d3.v3.min.js'></script>";
+	echo "<script src='/assets/js/user/graphic.js'></script>";
+} ?>
 </body>
 </html>
