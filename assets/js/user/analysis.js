@@ -18,12 +18,10 @@ $(function () {
 	var echartUserChanges = echarts.init($('#user-changes > .echarts').get(0));
 	var echartTop10a = echarts.init($('#top10 > .echarts').get(0));
 	var echartTop10b = echarts.init($('#top10 > .echarts').get(1));
-	var echartVisial = echarts.init($('#visial > .echarts').get(0));
 	
 	function allHideBut(name) {
 		$('#user-changes').hide();
 		$('#top10').hide();
-		$('#visial').hide();
 		$(name).show();
 	}
 	
@@ -219,10 +217,5 @@ $(function () {
 			echartTop10b.setOption(option2);
 		});
 	});
-	
-	$('#getVisial').click(function () {
-		allHideBut('#visial');
-	});
-	
 	$('#getIncremental').click();
 });
