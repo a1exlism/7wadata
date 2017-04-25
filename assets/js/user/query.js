@@ -1,5 +1,6 @@
-var globalVal;
 $(function () {
+	var globalVal;
+	var queryArr = {};
 	
 	function toTimestamp(ori) {
 		return Math.round((new Date(ori)).getTime() / 1000);
@@ -61,28 +62,8 @@ $(function () {
 	
 	//  table_header creator end
 	
-	//  query arr start
-	var startDate = document.querySelector('#startDate');
-	var endDate = document.querySelector('#endDate');
-	var location = document.querySelector('#location');
-	var qq = document.querySelector('#qq');
-	var wechat = document.querySelector('#wechat');
-	var searchType = document.querySelector('#search-type');
-	var keyword = document.querySelector('#keyword');
-	
-	var queryArr = {
-		'startDate': toTimestamp(startDate.value),
-		'endDate': toTimestamp(endDate.value),
-		'location': location.value,
-		'qq': qq.value,
-		'wechat': wechat.value,
-		'search-type': searchType.value,
-		'keyword': keyword.value
-	};
-	//  query arr end
-	
 	//  searchBy offset
-	function searchBy(offsetPage) {
+	function searchBy(offsetPage, queryArr) {
 		$.ajax({
 			type: 'POST',
 			url: '/user/query/search/' + offsetPage,
@@ -107,6 +88,27 @@ $(function () {
 	
 	$('#search').click(function () {
 		//  form data collection
+		//  query arr start
+		var startDate = document.querySelector('#startDate');
+		var endDate = document.querySelector('#endDate');
+		var location = document.querySelector('#location');
+		var qq = document.querySelector('#qq');
+		var wechat = document.querySelector('#wechat');
+		var searchType = document.querySelector('#search-type');
+		var keyword = document.querySelector('#keyword');
+		
+		queryArr = {
+			'startDate': toTimestamp(startDate.value),
+			'endDate': toTimestamp(endDate.value),
+			'location': location.value.trim(),
+			'qq': qq.value.trim(),
+			'wechat': wechat.value.trim(),
+			'search-type': searchType.value.trim(),
+			'keyword': keyword.value.trim()
+		};
+		//  query arr end
+		
+		// console.log(queryArr);
 		
 		//  1. Generate pagination group
 		var perPage = 15;
@@ -119,7 +121,7 @@ $(function () {
 			dataType: 'JSON',
 			success: function (data) {
 				if (data) {
-					//  create  tag
+					//  create pagination tag
 					$(pageGrp).empty();
 					pages = Math.ceil(data.nums / perPage);
 					
@@ -128,11 +130,11 @@ $(function () {
 							var tagA = $('<a href="#">' + (i + 1) + '</a>');
 							var tagLi = $('<li></li>');
 							
-							if(i == 0) {
+							if (i == 0) {
 								$(tagLi).addClass('active');
 							}
 							tagA.click(function () {
-								searchBy(i);
+								searchBy(i, queryArr);
 							});
 							$(tagLi).append($(tagA));
 							$(tagLi).click(function () {
@@ -150,10 +152,9 @@ $(function () {
 			theadCreate();
 		}
 		
-		//  3. Generate result doms
-		searchBy(0);
-		
+		//  3. Generate result DOMs
+		searchBy(0, queryArr);
 	});
 	
-	
+	$('#search').click();
 });

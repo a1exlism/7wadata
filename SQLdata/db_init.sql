@@ -54,9 +54,9 @@ CREATE TABLE projs (
 CREATE TABLE user_privilege (
   id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user_id    INT NOT NULL,
-  is_upload  BOOL         DEFAULT 1,
-  is_query   BOOL         DEFAULT 1,
-  is_graphic BOOL         DEFAULT 1
+  is_upload  BOOL         DEFAULT 0,
+  is_query   BOOL         DEFAULT 0,
+  is_graphic BOOL         DEFAULT 0
 );
 
 # add an Admin by default (only one)

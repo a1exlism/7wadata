@@ -36,16 +36,16 @@ class Graphic extends MY_Controller
 		
 		$proj_nums = $this->get_proj_nums();
 		$excel_nums = $this->projects->get_excel_nums($this->user_id, $proj_id);
-		if (empty($proj_nums)) {
-			$this->load->view('user/proj_error', array(
+		if ($this->user->has_privilege($this->user_id, 'is_graphic') != 1) {
+			$this->load->view('user/error');
+		} else if (empty($proj_nums)) {
+			$this->load->view('user/error', array(
 				'type' => 'empty_proj'
 			));
 		} else if (empty($excel_nums)) {
 			$this->load->view('user/error', array(
 				'type' => 'empty_excel'
 			));
-		} else if ($this->user->has_privilege($this->user_id, 'is_graphic') != 1) {
-			$this->load->view('user/error');
 		} else {
 			$this->load->view('user/graphic', array(
 				'proj_nums' => $proj_nums,
