@@ -78,9 +78,11 @@ class Upexcel extends MY_Controller
 		//  创建excel表 涉及数据库: new table, projs
 		//  form data
 		$type = $this->input->post('type');
+		//  下面是三列No.
 		$expense_side = $this->input->post('expense_side');
 		$income_side = $this->input->post('income_side');
 		$amount = $this->input->post('amount');
+		
 		$values = json_decode($this->input->post('table'));
 		$proj_id = $this->input->post('proj_id');
 		

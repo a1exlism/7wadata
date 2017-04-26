@@ -101,6 +101,35 @@ function process_wb(wb) {
 	global_wb = wb;
 	globalOutput = JSON.stringify(to_json(wb), null, 2);
 	
+	//  todo: Generate the whole nums of columns
+	//  create selects start
+	var selectColumnLen = 0;
+	var outObj = JSON.parse(globalOutput);
+	for (i in outObj) {
+		var objRow = outObj[i];
+		for (i in objRow) {
+			++selectColumnLen;
+		}
+	}
+	var selects = [
+		$('#expense-side'),
+		$('#income-side'),
+		$('#amount')
+	];
+	
+	for (var j = 0; j < 3; ++j) {
+		for (var i = 0; i < selectColumnLen; ++i) {
+			var no = i + 1;
+			console.log('no ' + no);
+			var domOption = $('<option value="' + no + '">第' + no + '栏</option>');
+			if (j == i) {
+				domOption.attr('selected', 'selected');
+			}
+			$(selects[j]).append(domOption);
+		}
+	}
+	//  create selects ends
+	
 	if (typeof console !== 'undefined')
 		console.log("output", new Date());
 }
@@ -155,6 +184,7 @@ if (drop.addEventListener) {
 }
 
 var xlf = document.getElementById('xlf');
+//  handle the input file xlf
 function handleFile(e) {
 	var files = e.target.files;
 	var f = files[0];
