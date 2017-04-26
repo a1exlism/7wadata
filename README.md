@@ -2,13 +2,10 @@
 
 
 ## Technology Stack
-This is a Single Page application.
-
-file structure
-front-end:~~[Reference](https://segmentfault.com/a/1190000005969488)
-React + Webpack + antsUI~~
-UI - Bootstrap.js
-Network - Axios.js / fetch
+front-end:[~~Reference~~](https://segmentfault.com/a/1190000005969488)
+~~React + Webpack + antsUI~~
+UI - Bootstrap.js Semantic-UI(login/register)
+Network - ~~Axios.js / fetch~~jQuery Ajax || form name
 
 back-end:
   CodeIgniter : ~~RESTful api design~~ SSR
@@ -20,11 +17,13 @@ back-end:
 SQL Init:  
   SQLdata/  about database
 
-### 需求更新
-权限应该是指操作的功能，不是指mysql的权限
-比如能否上传，能否查询，能否使用可视化分析工具
+Excels Test:
+  test_file/
+  
+Demands:
+  demands/
 
-## file tree likes
+## file tree likes(Desprecated)
 [CodeIgniter+React](http://stackoverflow.com/questions/30504206/codeigniter-and-react-js-setup)
 [SPA-file-structure](https://segmentfault.com/a/1190000005969488)
 [webpack+react](https://juejin.im/post/581fd8b9bf22ec0068d5fff2)

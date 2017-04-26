@@ -18,7 +18,6 @@ class Query extends MY_Controller
 		
 		
 		$this->load->model('user');
-		$this->load->model('projects');
 		$this->load->model('query_model');
 		$this->config->load('search_type');
 		

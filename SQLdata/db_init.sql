@@ -54,6 +54,8 @@ CREATE TABLE projs (
 CREATE TABLE user_privilege (
   id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user_id    INT NOT NULL,
+  is_manage  BOOL         DEFAULT 0,
+  # for the user privileges with projects manager
   is_upload  BOOL         DEFAULT 0,
   is_query   BOOL         DEFAULT 0,
   is_graphic BOOL         DEFAULT 0

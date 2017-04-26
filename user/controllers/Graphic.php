@@ -12,7 +12,7 @@ class Graphic extends MY_Controller
 		
 		$this->load->model('excels');
 		$this->load->model('user');
-		$this->load->model('projects');
+		$this->load->model('proj_model');
 		
 		$this->user_id = $this->user->get_user_id($this->session->userdata('user_id'));
 		
@@ -35,7 +35,7 @@ class Graphic extends MY_Controller
 		));
 		
 		$proj_nums = $this->get_proj_nums();
-		$excel_nums = $this->projects->get_excel_nums($this->user_id, $proj_id);
+		$excel_nums = $this->proj_model->get_excel_nums($this->user_id, $proj_id);
 		if ($this->user->has_privilege($this->user_id, 'is_graphic') != 1) {
 			$this->load->view('user/error');
 		} else if (empty($proj_nums)) {
@@ -56,13 +56,13 @@ class Graphic extends MY_Controller
 	
 	public function get_proj_nums()
 	{
-		return $this->projects->proj_nums($this->user_id);
+		return $this->proj_model->proj_nums($this->user_id);
 	}
 	
 	public function get_excel_id_arr($proj_id = 1)
 	{
 		$proj_id = $this->uri->segment(3) || 1;
-		$res = $this->projects->get_excel_ids($this->user_id, $proj_id)->result();
+		$res = $this->proj_model->get_excel_ids($this->user_id, $proj_id)->result();
 		$arr = [];
 		foreach ($res as $val) {
 			array_push($arr, $val->{'excel_id'});
