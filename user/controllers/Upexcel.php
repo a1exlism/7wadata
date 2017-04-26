@@ -33,10 +33,11 @@ class Upexcel extends MY_Controller
 	{
 		$use_type = $this->config->item('use_type');
 		$projs = $this->proj_model->get_projs($this->user_id)->result();
-		if (empty($proj_id)) {
+		$proj_got = $this->proj_model->get_proj($this->user_id, $proj_id)->row();
+		if (empty($proj_id) || empty($proj_got)) {
 			$proj_now = $projs[0];
 		} else {
-			$proj_now = $this->proj_model->get_proj($this->user_id, $proj_id)->row();
+			$proj_now = $proj_got;
 		}
 		
 		$this->load->view('user/header', array(
@@ -62,7 +63,7 @@ class Upexcel extends MY_Controller
 //		var_dump($projs[0]->{'proj_id'});
 		echo "</pre>";
 	}
-
+	
 	public function excel_create()
 	{
 		//  创建excel表 涉及数据库: new table, projs
