@@ -7,6 +7,7 @@ class Manager extends MY_Controller
 	private $list = array(
 		'user_id' => '用户ID',
 		'username' => '用户名',
+		'is_manage' => '项目管理',
 		'is_upload' => 'Excel上传',
 		'is_query' => '数据查询',
 		'is_graphic' => '图形化查询'
