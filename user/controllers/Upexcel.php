@@ -12,7 +12,7 @@ class Upexcel extends MY_Controller
 		
 		$this->load->model('excels');
 		$this->load->model('user');
-		$this->load->model('projects');
+		$this->load->model('proj_model');
 		
 		$this->user_id = $this->user->get_user_id($this->session->userdata('user_id'));
 		
@@ -60,7 +60,7 @@ class Upexcel extends MY_Controller
 	public function new_proj()
 	{
 		$new_proj_id = $this->get_proj_nums() + 1;
-		$this->projects->projs_new(array(
+		$this->proj_model->projs_new(array(
 			'user_id' => $this->user_id,
 			'proj_id' => $new_proj_id,
 			'excel_id' => $this->user_id . '_' . $new_proj_id . '_1'
@@ -70,7 +70,7 @@ class Upexcel extends MY_Controller
 	
 	public function get_proj_nums()
 	{
-		return $this->projects->proj_nums($this->user_id);
+		return $this->proj_model->proj_nums($this->user_id);
 	}
 	
 	public function excel_create()
@@ -86,18 +86,18 @@ class Upexcel extends MY_Controller
 		$values = json_decode($this->input->post('table'));
 		$proj_id = $this->input->post('proj_id');
 		
-		$excel_nums = $this->projects->get_excel_nums($this->user_id, $proj_id);
+		$excel_nums = $this->proj_model->get_excel_nums($this->user_id, $proj_id);
 		
 		$table_name = $this->user_id . '_' . $proj_id . '_' . ($excel_nums + 1);
 		
 		//  配置projs表
 		if ($excel_nums == 0) {
 			//  第1个excel
-			$this->projects->projs_complete($table_name, $type); //  补全表信息
+			$this->proj_model->projs_complete($table_name, $type); //  补全表信息
 		} else {
 			//  第2+的excel
 			//  建立新表信息
-			$this->projects->projs_new(array(
+			$this->proj_model->projs_new(array(
 				'proj_id' => $proj_id,
 				'user_id' => $this->user_id,
 				'excel_id' => $table_name,

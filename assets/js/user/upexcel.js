@@ -106,16 +106,21 @@ function process_wb(wb) {
 	var selectColumnLen = 0;
 	var outObj = JSON.parse(globalOutput);
 	for (i in outObj) {
-		var objRow = outObj[i];
-		for (i in objRow) {
+		var dataObjs = outObj[i];
+		for (i in dataObjs[0]) {
 			++selectColumnLen;
 		}
 	}
+	
 	var selects = [
 		$('#expense-side'),
 		$('#income-side'),
 		$('#amount')
 	];
+	//  多次excel上传的option清空操作
+	for(i in selects) {
+		selects[i].empty();
+	}
 	
 	for (var j = 0; j < 3; ++j) {
 		for (var i = 0; i < selectColumnLen; ++i) {

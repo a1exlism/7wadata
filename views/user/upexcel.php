@@ -66,9 +66,7 @@
 						<label for="select" class="col-sm-2 control-label">付款方:</label>
 						<div class="col-sm-4">
 							<select class="form-control" id="expense-side" name="expense_side">
-<!--								<option value="1" selected="selected">第一栏</option>-->
-<!--								<option value="2">第二栏</option>-->
-<!--								<option value="3">第三栏</option>-->
+							
 							</select>
 						</div>
 					</div>
@@ -76,9 +74,7 @@
 						<label for="select" class="col-sm-2 control-label">收款方:</label>
 						<div class="col-sm-4">
 							<select class="form-control" id="income-side" name="income_side">
-<!--								<option value="1">第一栏</option>-->
-<!--								<option value="2" selected="selected">第二栏</option>-->
-<!--								<option value="3">第三栏</option>-->
+
 							</select>
 						</div>
 					</div>
@@ -86,9 +82,7 @@
 						<label for="select" class="col-sm-2 control-label">金额:</label>
 						<div class="col-sm-4">
 							<select class="form-control" id="amount" name="amount">
-<!--								<option value="1">第一栏</option>-->
-<!--								<option value="2">第二栏</option>-->
-<!--								<option value="3" selected="selected">第三栏</option>-->
+
 							</select>
 						</div>
 					</div>
