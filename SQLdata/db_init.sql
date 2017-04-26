@@ -40,6 +40,16 @@ CREATE TABLE projs (
 )
   CHARACTER SET = utf8;
 
+# record projects' details
+CREATE TABLE proj_details (
+  id               INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id          INT UNSIGNED NOT NULL,
+  proj_id          INT UNSIGNED NOT NULL,
+  proj_name        VARCHAR(20)  NOT NULL,
+  proj_description TEXT
+)
+  CHARACTER SET = utf8;
+
 # excels demo 动态创建的表给命名1,2,....
 # excel_id = user_id.'_'.proj_id.'_'.ExcelNO;
 # CREATE TABLE excel_id (
@@ -59,7 +69,8 @@ CREATE TABLE user_privilege (
   is_upload  BOOL         DEFAULT 0,
   is_query   BOOL         DEFAULT 0,
   is_graphic BOOL         DEFAULT 0
-);
+)
+  CHARACTER SET = utf8;
 
 # add an Admin by default (only one)
 INSERT INTO users (user_id, username, password, is_admin) VALUE (

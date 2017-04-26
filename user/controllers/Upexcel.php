@@ -24,26 +24,29 @@ class Upexcel extends MY_Controller
 		
 	}
 	
-	public function index($proj_no = 1)
+	public function index($proj_no = null)
 	{
 		$this->project($proj_no);
 	}
 	
-	public function project($proj_no = 1)
+	public function project($proj_id = null)
 	{
 		$use_type = $this->config->item('use_type');
-		
-		$proj_nums = $this->get_proj_nums();
-		if ($proj_no > $proj_nums) {
-			$proj_no = 1;
+		$projs = $this->proj_model->get_projs($this->user_id)->result();
+		if (empty($proj_id)) {
+			$proj_now = $projs[0];
+		} else {
+			$proj_now = $this->proj_model->get_proj($this->user_id, $proj_id)->row();
 		}
 		
 		$this->load->view('user/header', array(
 			'username' => $this->session->userdata('user_id'),
-			'use_type' => $use_type,
-			'proj_nums' => $proj_nums,
-			'present_proj_no' => $proj_no
+			'use_type' => $use_type,  //  定义的文件
+			'projs' => $projs,
+			'proj_id' => $proj_now->{'proj_id'},
+			'proj_name' => $proj_now->{'proj_name'},
 		));
+		
 		if ($this->user->has_privilege($this->user_id, 'is_upload') != 1) {
 			$this->load->view('user/error');
 		} else {
@@ -54,25 +57,12 @@ class Upexcel extends MY_Controller
 	
 	public function test()
 	{
-//		var_dump($this->user->has_privilege($this->user_id, 'is_upload'));
+		echo "<pre>";
+//		$projs = $this->proj_model->get_projs($this->user_id)->result();
+//		var_dump($projs[0]->{'proj_id'});
+		echo "</pre>";
 	}
-	
-	public function new_proj()
-	{
-		$new_proj_id = $this->get_proj_nums() + 1;
-		$this->proj_model->projs_new(array(
-			'user_id' => $this->user_id,
-			'proj_id' => $new_proj_id,
-			'excel_id' => $this->user_id . '_' . $new_proj_id . '_1'
-		));
-		redirect('/user/upexcel/project/' . $new_proj_id, 'location');
-	}
-	
-	public function get_proj_nums()
-	{
-		return $this->proj_model->proj_nums($this->user_id);
-	}
-	
+
 	public function excel_create()
 	{
 		//  创建excel表 涉及数据库: new table, projs
@@ -91,21 +81,13 @@ class Upexcel extends MY_Controller
 		$table_name = $this->user_id . '_' . $proj_id . '_' . ($excel_nums + 1);
 		
 		//  配置projs表
-		if ($excel_nums == 0) {
-			//  第1个excel
-			$this->proj_model->projs_complete($table_name, $type); //  补全表信息
-		} else {
-			//  第2+的excel
-			//  建立新表信息
-			$this->proj_model->projs_new(array(
-				'proj_id' => $proj_id,
-				'user_id' => $this->user_id,
-				'excel_id' => $table_name,
-				'type' => $type
-			));
-		}
+		$this->proj_model->excel_new(array(
+			'proj_id' => $proj_id,
+			'user_id' => $this->user_id,
+			'excel_id' => $table_name,
+			'type' => $type
+		));
 		//  创建数据库
-//		echo $table_name;
 		$this->excels->create_table($table_name, array(
 			'expense_side' => $expense_side,
 			'income_side' => $income_side,

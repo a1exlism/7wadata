@@ -5,15 +5,12 @@
 			<h3 class="text-center">项目组</h3>
 			<div class="dividing-line"></div>
 			<?php
-			$i = 0;
-			while ($i++ < $proj_nums) {
+			foreach ($projs as $no => $proj) {
 				echo "<p class='proj'>
-						<a href='/user/upexcel/project/$i'>项目$i</a>
-						</p>";
+					<a href='/user/upexcel/project/$proj->proj_id'>$proj->proj_name</a>
+				</p>";
 			}
-			
 			?>
-			<p id="proj-add"><a class="btn-sm btn-default" href="/user/upexcel/new_proj">添加新项目</a></p>
 		</div>
 	</div>
 </div>
@@ -21,13 +18,7 @@
 <div id="main" class="col-sm-10 container">
 	<div class="row">
 		<div class="col-sm-offset-1 col-sm-10">
-			<h2 class="text-center">Excel | <?php
-				if ($proj_nums == 0) {
-					echo '请先从左边创建一个项目';
-				} else {
-					echo $present_proj_no;
-				}
-				?></h2>
+			<h2 class="text-center">项目名: <?= $proj_name ?></h2>
 			<?php
 			//			var_dump($use_type);
 			?>
@@ -74,7 +65,7 @@
 						<label for="select" class="col-sm-2 control-label">收款方:</label>
 						<div class="col-sm-4">
 							<select class="form-control" id="income-side" name="income_side">
-
+							
 							</select>
 						</div>
 					</div>
@@ -82,7 +73,7 @@
 						<label for="select" class="col-sm-2 control-label">金额:</label>
 						<div class="col-sm-4">
 							<select class="form-control" id="amount" name="amount">
-
+							
 							</select>
 						</div>
 					</div>
@@ -95,7 +86,7 @@
 						</div>
 					</div>
 					<div class="form-group-sm">
-						<input type="hidden" id="proj_id" name="proj_id" value="<?= $present_proj_no; ?>">
+						<input type="hidden" id="proj_id" name="proj_id" value="<?= $proj_id ?>">
 					</div>
 					<div class="form-group-sm">
 						<input type="hidden" id="table" name="table" value="">
