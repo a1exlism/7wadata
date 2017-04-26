@@ -31,27 +31,32 @@ class Upexcel extends MY_Controller
 	
 	public function project($proj_id = null)
 	{
-		$use_type = $this->config->item('use_type');
-		$projs = $this->proj_model->get_projs($this->user_id)->result();
-		$proj_got = $this->proj_model->get_proj($this->user_id, $proj_id)->row();
-		if (empty($proj_id) || empty($proj_got)) {
-			$proj_now = $projs[0];
-		} else {
-			$proj_now = $proj_got;
-		}
 		
 		$this->load->view('user/header', array(
 			'username' => $this->session->userdata('user_id'),
-			'use_type' => $use_type,  //  定义的文件
-			'projs' => $projs,
-			'proj_id' => $proj_now->{'proj_id'},
-			'proj_name' => $proj_now->{'proj_name'},
+			'use_type' => $this->config->item('use_type'),  //  定义的文件
 		));
-		
 		if ($this->user->has_privilege($this->user_id, 'is_upload') != 1) {
 			$this->load->view('user/error');
+		} else if (empty($this->proj_model->get_projs($this->user_id)->num_rows())) {
+			$this->load->view('user/error', array(
+				'type' => 'empty_proj',
+			));
 		} else {
-			$this->load->view('user/upexcel');
+			
+			$projs = $this->proj_model->get_projs($this->user_id)->result();
+			$proj_got = $this->proj_model->get_proj($this->user_id, $proj_id)->row();
+			if (empty($proj_id) || empty($proj_got)) {
+				$proj_now = $projs[0];
+			} else {
+				$proj_now = $proj_got;
+			}
+			
+			$this->load->view('user/upexcel', array(
+				'projs' => $projs,
+				'proj_id' => $proj_now->{'proj_id'},
+				'proj_name' => $proj_now->{'proj_name'},
+			));
 		}
 		$this->load->view('user/footer');
 	}
