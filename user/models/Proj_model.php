@@ -5,15 +5,59 @@ class Proj_model extends CI_Model
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->dbforge();
 	}
 	
-	public function proj_nums($user_id)
+	public function get_projs($user_id)
 	{
-		$this->db->select('proj_id');
-		$this->db->distinct();
+		$this->db->select('*');
 		$this->db->where('user_id', $user_id);
-		$query = $this->db->get('projs');
-		return $query->num_rows();
+		$query = $this->db->get('proj_details');
+		return $query;
+	}
+	
+	public function get_proj($user_id, $proj_id)
+	{
+		$this->db->select('*');
+		$this->db->where(array(
+			'user_id' => $user_id,
+			'proj_id' => $proj_id
+		));
+		$query = $this->db->get('proj_details');
+		return $query;
+	}
+	
+	public function proj_details_insert($data)
+	{
+		$this->db->insert('proj_details', $data);
+	}
+	
+	public function proj_deletes($user_id, $proj_id)
+	{
+		//  projs && proj_details
+		$tables = array('projs', 'proj_details');
+		$this->db->where(array(
+			'user_id' => $user_id,
+			'proj_id' => $proj_id,
+		));
+		$this->db->delete($tables);
+	}
+	
+	public function proj_update($user_id, $proj_id, $data)
+	{
+		$this->db->where(array(
+			'user_id' => $user_id,
+			'proj_id' => $proj_id,
+		));
+		$this->db->update('proj_details', $data);
+	}
+	
+	//  GET excels arr
+	public function excel_drops($excel_arr)
+	{
+		foreach ($excel_arr as $key => $excel_id) {
+			$this->dbforge->drop_table($excel_id, TRUE);
+		}
 	}
 	
 	public function get_excel_nums($user_id, $proj_id)
@@ -28,16 +72,7 @@ class Proj_model extends CI_Model
 		return $this->db->get('projs')->num_rows();
 	}
 	
-	public function projs_complete($excel_id, $type)
-	{
-		//  针对于projs第一行
-		$this->db->where('excel_id', $excel_id);
-		$this->db->update('projs', array(
-			'type' => $type
-		));
-	}
-	
-	public function projs_new($data)
+	public function excel_new($data)
 	{
 		//  $data => array
 		$this->db->insert('projs', $data);

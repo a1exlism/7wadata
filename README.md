@@ -22,7 +22,11 @@ Excels Test:
   
 Demands:
   demands/
-
+  
+UserDefined:
+  user/config/user_type.php  
+  --/user_agents.php
+  --/search_type.php
 ## file tree likes(Desprecated)
 [CodeIgniter+React](http://stackoverflow.com/questions/30504206/codeigniter-and-react-js-setup)
 [SPA-file-structure](https://segmentfault.com/a/1190000005969488)
