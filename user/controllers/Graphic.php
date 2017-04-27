@@ -35,17 +35,21 @@ class Graphic extends MY_Controller
 		));
 		
 		$projs = $this->proj_model->get_projs($this->user_id)->result();
-		if (empty($proj_id)) {
-			$proj_id = $projs[0]->{'proj_id'};
-		}
+		//  todo: 这里有问题
+		
 		$proj_now = $this->proj_model->get_proj($this->user_id, $proj_id)->row();
 		if ($this->user->has_privilege($this->user_id, 'is_graphic') != 1) {
 			$this->load->view('user/error');
 		} else if (empty($projs)) {
+			//  no projs
 			$this->load->view('user/error', array(
 				'type' => 'empty_proj'
 			));
 		} else {
+			if (empty($proj_now)) {
+				$proj_now = $projs[0];
+				$proj_id = $proj_now->{'proj_id'};
+			}
 			if (sizeof($this->get_excel_id_arr($proj_id)) < 1) {
 				//  判断是否有数据
 				$has_data = false;
@@ -82,10 +86,10 @@ class Graphic extends MY_Controller
 	}
 	
 	
-	public function test($proj_id)
+	public function test($proj_id = null)
 	{
 		echo "<pre>";
-		var_dump(sizeof($this->get_excel_id_arr($proj_id)));
+		var_dump($this->proj_model->get_projs($this->user_id)->result());
 		echo "</pre>";
 	}
 }

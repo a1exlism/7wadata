@@ -43,9 +43,8 @@ CREATE TABLE projs (
 
 # record projects' details
 CREATE TABLE proj_details (
-  id               INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  proj_id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user_id          INT UNSIGNED NOT NULL,
-  proj_id          INT UNSIGNED NOT NULL,
   proj_name        VARCHAR(20)  NOT NULL,
   proj_description TEXT
 )

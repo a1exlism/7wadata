@@ -48,13 +48,13 @@ class Projects extends MY_Controller
 			} else {
 				$proj_now = $proj_query->row();
 			}
+			$this->load->view('user/projects', array(
+				'projs' => $projs->result(),
+				'proj_id' => $proj_now->{'proj_id'},
+				'proj_name' => $proj_now->{'proj_name'},
+				'proj_description' => $proj_now->{'proj_description'},
+			));
 		}
-		$this->load->view('user/projects', array(
-			'projs' => $projs->result(),
-			'proj_id' => $proj_now->{'proj_id'},
-			'proj_name' => $proj_now->{'proj_name'},
-			'proj_description' => $proj_now->{'proj_description'},
-		));
 		$this->load->view('user/footer');
 	}
 	
@@ -63,10 +63,8 @@ class Projects extends MY_Controller
 	{
 		$proj_name = $this->input->post('proj_name');
 		$proj_description = $this->input->post('proj_description');
-		$proj_id = $this->proj_model->get_projs($this->user_id)->num_rows() + 1;
 		$this->proj_model->proj_details_insert(array(
 			'user_id' => $this->user_id,
-			'proj_id' => $proj_id,
 			'proj_name' => $proj_name,
 			'proj_description' => $proj_description,
 		));
