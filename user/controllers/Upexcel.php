@@ -47,6 +47,7 @@ class Upexcel extends MY_Controller
 			$projs = $this->proj_model->get_projs($this->user_id)->result();
 			$proj_got = $this->proj_model->get_proj($this->user_id, $proj_id)->row();
 			if (empty($proj_id) || empty($proj_got)) {
+				//  No such proj_id, and there should be a proj at least
 				$proj_now = $projs[0];
 			} else {
 				$proj_now = $proj_got;

@@ -23,45 +23,47 @@ class Graphic extends MY_Controller
 		}
 	}
 	
-	public function index($proj_id = 1)
+	public function index($proj_id = null)
 	{
 		$this->project($proj_id);
 	}
 	
-	public function project($proj_id = 1)
+	public function project($proj_id)
 	{
 		$this->load->view('user/header', array(
 			'username' => $this->session->userdata('user_id')
 		));
 		
-		$proj_nums = $this->get_proj_nums();
-		$excel_nums = $this->proj_model->get_excel_nums($this->user_id, $proj_id);
+		$projs = $this->proj_model->get_projs($this->user_id)->result();
+		if (empty($proj_id)) {
+			$proj_id = $projs[0]->{'proj_id'};
+		}
+		$proj_now = $this->proj_model->get_proj($this->user_id, $proj_id)->row();
 		if ($this->user->has_privilege($this->user_id, 'is_graphic') != 1) {
 			$this->load->view('user/error');
-		} else if (empty($proj_nums)) {
+		} else if (empty($projs)) {
 			$this->load->view('user/error', array(
 				'type' => 'empty_proj'
 			));
-		} else if (empty($excel_nums)) {
-			$this->load->view('user/error', array(
-				'type' => 'empty_excel'
-			));
 		} else {
+			if (sizeof($this->get_excel_id_arr($proj_id)) < 1) {
+				//  判断是否有数据
+				$has_data = false;
+			} else {
+				$has_data = true;
+			}
 			$this->load->view('user/graphic', array(
-				'proj_nums' => $proj_nums,
+				'projs' => $projs,
+				'proj_id' => $proj_id,
+				'proj_name' => $proj_now->{'proj_name'},
+				'has_data' => $has_data,
 			));
 		}
 		$this->load->view('user/footer');
 	}
 	
-	public function get_proj_nums()
+	public function get_excel_id_arr($proj_id)
 	{
-		return $this->proj_model->proj_nums($this->user_id);
-	}
-	
-	public function get_excel_id_arr($proj_id = 1)
-	{
-		$proj_id = $this->uri->segment(3) || 1;
 		$res = $this->proj_model->get_excel_ids($this->user_id, $proj_id)->result();
 		$arr = [];
 		foreach ($res as $val) {
@@ -72,17 +74,18 @@ class Graphic extends MY_Controller
 	
 	public function get_excels_results()
 	{
-		$excel_arr = $this->get_excel_id_arr(1);
+		$proj_id = $this->input->get('proj_id');
+		$excel_arr = $this->get_excel_id_arr($proj_id);
 		$contents = $this->excels->select_excels($excel_arr);
 		
 		echo json_encode($contents);
 	}
 	
 	
-	public function test()
+	public function test($proj_id)
 	{
 		echo "<pre>";
-		// echo ($this->proj_id);
+		var_dump(sizeof($this->get_excel_id_arr($proj_id)));
 		echo "</pre>";
 	}
 }

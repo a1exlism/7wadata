@@ -1,5 +1,5 @@
-var width = 600;
-var height = 400;
+var width = 800;
+var height = 600;
 var globalData; //  存储dump下来的所有数据
 var dataThead = $('#excel-details thead');
 var dataTbody = $('#excel-details tbody');
@@ -83,7 +83,7 @@ function showAllDetails() {
 		var bodyTr = $('<tr></tr>');
 		$(bodyTr).append('<td>' + (parseInt(i) + 1) + '</td>');
 		tdAppendTr(bodyTr, singleRow);
-	
+		
 	}
 }
 
@@ -130,10 +130,12 @@ $(function () {
 	//  force picture Initialized
 	$.ajax({
 		type: 'GET',
-		// dataType: 'JSON',
+		dataType: 'JSON',
+		data: {
+			'proj_id': $('h1').data('projid')
+		},
 		url: '/user/graphic/get_excels_results',
 		success: function (data) {
-			data = JSON.parse(data);
 			globalData = data;
 			nodesArr = getUserArr(data);
 			nodes = getUserNodes(nodesArr);
