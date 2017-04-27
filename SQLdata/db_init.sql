@@ -6,6 +6,7 @@ CREATE TABLE users (
   user_id  INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(40)  NOT NULL,
   password VARCHAR(40)  NOT NULL,
+  is_vip   BOOLEAN               DEFAULT 0,
   is_admin BOOLEAN               DEFAULT 0
 )
   CHARACTER SET = utf8;

@@ -126,7 +126,9 @@ $(function () {
 	
 	var nodes = [];
 	var edges = [];
-	
+	var isMouseDown, oldScale = 1;
+	var curPos_x, curPos_y, mousePos_x, mousePos_y;
+	var viewBox_x = 0, viewBox_y = 0;
 	//  force picture Initialized
 	$.ajax({
 		type: 'GET',
@@ -144,7 +146,43 @@ $(function () {
 			var svg = d3.select('#graph')
 				.append('svg')
 				.attr('width', width)
-				.attr('height', height);
+				.attr('height', height)
+				.call(d3.behavior.zoom()
+					//  缩放
+						.scaleExtent([0.1, 10])
+						.on('zoom', function () {
+							if (oldScale !== d3.event.scale) {
+								var scale = oldScale / d3.event.scale;
+								oldScale = d3.event.scale;
+								viewBox_x = curPos_x - scale * (curPos_x - viewBox_x);
+								viewBox_y = curPos_y - scale * (curPos_y - viewBox_y);
+								svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
+							}
+						})
+				);
+			
+			svg.on("mousedown", function () {
+				isMouseDown = true;
+				mousePos_x = d3.mouse(this)[0];
+				mousePos_y = d3.mouse(this)[1];
+			});
+			
+			svg.on("mouseup", function () {
+				isMouseDown = false;
+				viewBox_x = viewBox_x - d3.mouse(this)[0] + mousePos_x;
+				viewBox_y = viewBox_y - d3.mouse(this)[1] + mousePos_y;
+				svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
+			});
+			
+			svg.on("mousemove", function () {
+				curPos_x = d3.mouse(this)[0];
+				curPos_y = d3.mouse(this)[1];
+				if (isMouseDown) {
+					viewBox_x = viewBox_x - d3.mouse(this)[0] + mousePos_x;
+					viewBox_y = viewBox_y - d3.mouse(this)[1] + mousePos_y;
+					svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
+				}
+			});
 			
 			var force = d3.layout.force()
 				.nodes(nodes) //指定节点数组
@@ -175,6 +213,7 @@ $(function () {
 					return color(i);
 				})
 				.call(force.drag);//使得节点能够拖动
+			
 			//添加描述节点的文字
 			var svg_texts = svg.selectAll("text")
 				.data(nodes)
@@ -193,7 +232,6 @@ $(function () {
 				.text(function (d) {
 					return d.name;
 				});
-			
 			
 			force.on("tick", function () { //对于每一个时间间隔
 				
