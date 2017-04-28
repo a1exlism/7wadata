@@ -83,6 +83,37 @@ class Query extends MY_Controller
 		));
 	}
 	
+	public function data_import()
+	{
+		$salt = md5(sha1('import'));
+		$post_salt = $this->input->post('salt');
+		$data = array(
+			'type' => $this->input->post('type'),
+			'city' => $this->input->post('city'),
+			'qq' => $this->input->post('qq'),
+			'weixin' => $this->input->post('weixin'),
+			'mobile' => $this->input->post('mobile'),
+			'phone' => $this->input->post('phone'),
+			'real_name' => $this->input->post('real_name'),
+			'id_card' => $this->input->post('id_card'),
+			'content' => $this->input->post('content'),
+			'source_url' => $this->input->post('source_url'),
+			'gmt_create' => $this->input->post('gmt_create'),
+			'gmt_modify' => $this->input->post('gmt_modify')
+		);
+		
+		if ($post_salt == $salt) {
+			$this->query_model->inserts($data);
+			echo json_encode(array(
+				'status' => '1'
+			));
+		} else {
+			echo json_encode(array(
+				'status' => '0'
+			));
+		}
+	}
+	
 	public function test()
 	{
 //		$results = $this->query_model->search(array(

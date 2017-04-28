@@ -10,6 +10,11 @@ class Query_model extends CI_Model
 		$this->load->dbforge();
 	}
 	
+	public function inserts($data)
+	{
+		$this->db->insert('data_query', $data);
+	}
+	
 	public function search($query_arr, $num, $offset)
 	{
 		foreach ($query_arr as $key => $val) {
