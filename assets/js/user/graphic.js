@@ -1,49 +1,164 @@
-var width = 800;
-var height = 600;
 var globalData; //  存储dump下来的所有数据
+var links = []; //  d3 svg数据
+var width = 960;  //  svg size
+var height = 760;
 var dataThead = $('#excel-details thead');
 var dataTbody = $('#excel-details tbody');
 
-function getUserArr(data) {
-	var obj = {};
-	var arr = [];
-	for (i in data) { //  get all data(duplicated)
-		var singleObj = data[i];
-		arr.push(singleObj['expense_side']);
-		arr.push(singleObj['income_side']);
-	}
-	if (Array.isArray(arr) && arr.length > 0) {
-		var len = arr.length;
-		for (var i = 0; i < len; i++) {
-			obj[arr[i]] = arr[i];
-		}
-		return Object.keys(obj);
-	}
-	return [];
-}
-
-function getUserNodes(dataArr) {
-	var nodes = [];
-	var objArr = dataArr.map(function (x) {
-		nodes.push({
-			name: x
-		});
-	});
-	return nodes;
-}
-
-function getEdges(userArr, data) {
-	var arr = [];
+function jsonParse(data) {
+	var singleData = {};
+	var result = [];
 	for (i in data) {
-		var singleObj = data[i];
-		arr.push({
-			source: userArr.indexOf(singleObj['expense_side']),
-			target: userArr.indexOf(singleObj['income_side'])
+		singleData = data[i];
+		result.push({
+			'source': singleData['expense_side'],
+			'target': singleData['income_side'],
+			'value': parseFloat(singleData['amount'] / 1000)
 		});
 	}
-	return arr;
+	return result;
 }
 
+function render(links) {
+	
+	var isMouseDown, oldScale = 1;
+	var curPos_x, curPos_y, mousePos_x, mousePos_y;
+	var viewBox_x = 0, viewBox_y = 0;
+	
+	var nodes = {};
+	// Compute the distinct nodes from the links.
+	links.forEach(function (link) {
+		link.source = nodes[link.source] || (nodes[link.source] = {
+				name: link.source
+				
+			});
+		link.target = nodes[link.target] || (nodes[link.target] = {
+				name: link.target
+			});
+		link.value = +link.value;
+	});
+	
+	var force = d3.layout.force()
+		.nodes(d3.values(nodes))
+		.links(links)
+		.size([width, height])
+		.linkDistance(60)
+		.charge(-300)
+		.on("tick", tick).start();
+	
+	var svg = d3.select("#graph")
+		.append("svg")
+		.attr("width", width)
+		.attr("height", height)
+		.call(d3.behavior.zoom()
+			//  缩放
+				.scaleExtent([0.1, 10])
+				.on('zoom', function () {
+					if (oldScale !== d3.event.scale) {
+						var scale = oldScale / d3.event.scale;
+						oldScale = d3.event.scale;
+						viewBox_x = curPos_x - scale * (curPos_x - viewBox_x);
+						viewBox_y = curPos_y - scale * (curPos_y - viewBox_y);
+						svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
+					}
+				})
+		);
+	
+	
+	svg.on("mousedown", function () {
+		isMouseDown = true;
+		mousePos_x = d3.mouse(this)[0];
+		mousePos_y = d3.mouse(this)[1];
+	});
+	
+	svg.on("mouseup", function () {
+		isMouseDown = false;
+		viewBox_x = viewBox_x - d3.mouse(this)[0] + mousePos_x;
+		viewBox_y = viewBox_y - d3.mouse(this)[1] + mousePos_y;
+		svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
+	});
+	
+	svg.on("mousemove", function () {
+		curPos_x = d3.mouse(this)[0];
+		curPos_y = d3.mouse(this)[1];
+		if (isMouseDown) {
+			viewBox_x = viewBox_x - d3.mouse(this)[0] + mousePos_x;
+			viewBox_y = viewBox_y - d3.mouse(this)[1] + mousePos_y;
+			svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
+		}
+	});
+	// build the arrow.
+	svg.append("svg:defs")    // Different link/path types can be defined here
+		.selectAll("marker")
+		.data(["end"])
+		.enter()
+		.append("svg:marker") // This section adds in the arrows
+		.attr("id", String)
+		.attr("viewBox", "0 -5 10 10")
+		.attr("refX", 15)
+		.attr("refY", -1.5)
+		.attr("markerWidth", 6)
+		.attr("markerHeight", 6)
+		.attr("orient", "auto")
+		.append("svg:path")
+		.attr("d", "M0,-5L10,0L0,5");
+	
+	// add the links and the arrows
+	var path = svg.append("svg:g")
+		.selectAll("path")
+		.data(force.links())
+		.enter()
+		.append("svg:path")
+		//    .attr("class", function(d) { return "link " + d.type; })
+		.attr("class", "link")
+		.attr("marker-end", "url(#end)");
+	
+	// define the nodes
+	var node = svg.selectAll(".node")
+		.data(force.nodes())
+		.enter()
+		.append("g")
+		.attr("class", "node")
+		.call(force.drag);
+	
+	var color = d3.scale.category20();
+	// add the nodes
+	node.append("circle")
+		.attr("r", 8)
+		.style('fill', function (d, i) {
+			return color(i)
+		});
+	
+	// add the text
+	node.append("text")
+		.attr("x", 12)
+		.attr("dy", ".35em")
+		.style('cursor', 'pointer')
+		.on('click', function () {
+			//  todo: callback(val)
+			showSingleDetails(this.innerHTML);
+		})
+		.text(function (d) {
+			return d.name;
+		});
+	
+	// add the curvy lines
+	function tick() {
+		path.attr("d", function (d) {
+			var dx = d.target.x - d.source.x,
+				dy = d.target.y - d.source.y,
+				dr = Math.sqrt(dx * dx + dy * dy);
+			return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+		});
+		
+		node.attr("transform", function (d) {
+			return "translate(" + d.x + "," + d.y + ")";
+		});
+	}
+	
+}
+
+//  tables render
 function tdAppendTr(bodyTr, singleRow) {
 	for (i in singleRow) {
 		if (i == 'id') {
@@ -54,7 +169,6 @@ function tdAppendTr(bodyTr, singleRow) {
 	}
 	$(dataTbody).append(bodyTr);
 }
-
 function showAllDetails() {
 	var data = globalData;
 	var singleRow;
@@ -107,7 +221,7 @@ function showSingleDetails(userName) {
 		}
 	}
 	//  分割线
-	$(dataTbody).append('<tr><td>---</td><td>---</td><td>---</td><td>---</td></tr>')
+	$(dataTbody).append('<tr><td>---</td><td>---</td><td>---</td><td>---</td></tr>');
 	//  2. 筛选 => b.income_side
 	for (i in data) {
 		singleRow = data[i];
@@ -119,156 +233,21 @@ function showSingleDetails(userName) {
 			tdAppendTr(bodyTr, singleRow);
 		}
 	}
-	
 }
 
-$(function () {
-	
-	var nodes = [];
-	var edges = [];
-	var isMouseDown, oldScale = 1;
-	var curPos_x, curPos_y, mousePos_x, mousePos_y;
-	var viewBox_x = 0, viewBox_y = 0;
-	//  force picture Initialized
-	$.ajax({
-		type: 'GET',
-		dataType: 'JSON',
-		data: {
-			'proj_id': $('h1').data('projid')
-		},
-		url: '/user/graphic/get_excels_results',
-		success: function (data) {
-			globalData = data;
-			nodesArr = getUserArr(data);
-			nodes = getUserNodes(nodesArr);
-			edges = getEdges(nodesArr, data);
-			
-			var svg = d3.select('#graph')
-				.append('svg')
-				.attr('width', width)
-				.attr('height', height)
-				.call(d3.behavior.zoom()
-					//  缩放
-						.scaleExtent([0.1, 10])
-						.on('zoom', function () {
-							if (oldScale !== d3.event.scale) {
-								var scale = oldScale / d3.event.scale;
-								oldScale = d3.event.scale;
-								viewBox_x = curPos_x - scale * (curPos_x - viewBox_x);
-								viewBox_y = curPos_y - scale * (curPos_y - viewBox_y);
-								svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
-							}
-						})
-				);
-			
-			svg.on("mousedown", function () {
-				isMouseDown = true;
-				mousePos_x = d3.mouse(this)[0];
-				mousePos_y = d3.mouse(this)[1];
-			});
-			
-			svg.on("mouseup", function () {
-				isMouseDown = false;
-				viewBox_x = viewBox_x - d3.mouse(this)[0] + mousePos_x;
-				viewBox_y = viewBox_y - d3.mouse(this)[1] + mousePos_y;
-				svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
-			});
-			
-			svg.on("mousemove", function () {
-				curPos_x = d3.mouse(this)[0];
-				curPos_y = d3.mouse(this)[1];
-				if (isMouseDown) {
-					viewBox_x = viewBox_x - d3.mouse(this)[0] + mousePos_x;
-					viewBox_y = viewBox_y - d3.mouse(this)[1] + mousePos_y;
-					svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
-				}
-			});
-			
-			var force = d3.layout.force()
-				.nodes(nodes) //指定节点数组
-				.links(edges) //指定连线数组
-				.size([width, height]) //指定作用域范围
-				.linkDistance(150) //指定连线长度
-				.charge([-400]); //相互之间的作用力
-			
-			force.start();  //  作用力
-			
-			//添加连线
-			var svg_edges = svg.selectAll("line")
-				.data(edges)
-				.enter()
-				.append("line")
-				.style("stroke", "#ccc")
-				.style("stroke-width", 1);
-			
-			var color = d3.scale.category20();
-			
-			//添加节点
-			var svg_nodes = svg.selectAll("circle")
-				.data(nodes)
-				.enter()
-				.append("circle")
-				.attr("r", 20)
-				.style("fill", function (d, i) {
-					return color(i);
-				})
-				.call(force.drag);//使得节点能够拖动
-			
-			//添加描述节点的文字
-			var svg_texts = svg.selectAll("text")
-				.data(nodes)
-				.enter()
-				.append("text")
-				.style("fill", "black")
-				.style('cursor', 'pointer')
-				.style('font-weight', 'bold')
-				.attr("dx", 20)
-				.attr("dy", 8)
-				.on('click', function () {
-					// console.log(this.innerHTML);
-					//  todo: callback(val)
-					showSingleDetails(this.innerHTML);
-				})
-				.text(function (d) {
-					return d.name;
-				});
-			
-			force.on("tick", function () { //对于每一个时间间隔
-				
-				//更新连线坐标
-				svg_edges.attr("x1", function (d) {
-					return d.source.x;
-				})
-					.attr("y1", function (d) {
-						return d.source.y;
-					})
-					.attr("x2", function (d) {
-						return d.target.x;
-					})
-					.attr("y2", function (d) {
-						return d.target.y;
-					});
-				
-				//更新节点坐标
-				svg_nodes.attr("cx", function (d) {
-					return d.x;
-				})
-					.attr("cy", function (d) {
-						return d.y;
-					});
-				
-				//更新文字坐标
-				svg_texts.attr("x", function (d) {
-					return d.x;
-				})
-					.attr("y", function (d) {
-						return d.y;
-					});
-			});
-			
-			showAllDetails(); //  默认显示所有内容
-		}
-	});
-	
-	//  force picture end
+$.ajax({
+	type: 'GET',
+	dataType: 'JSON',
+	data: {
+		'proj_id': $('h1').data('projid')
+	},
+	url: '/user/graphic/get_excels_results',
+	success: function (data) {
+		globalData = data;  //  for table shows
+		links = jsonParse(data);  //  for svg shows
+		console.log(links);
+		render(links);
+		showAllDetails();
+	}
 });
+
