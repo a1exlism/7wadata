@@ -24,7 +24,7 @@
 					<?php
 					if ($has_data == true) {
 						?>
-						<div class="col-lg-offset-1 col-lg-offset-10">
+						<div class="col-lg-12">
 							<div id="graph">
 							
 							</div>

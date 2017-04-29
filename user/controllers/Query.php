@@ -109,7 +109,8 @@ class Query extends MY_Controller
 			));
 		} else {
 			echo json_encode(array(
-				'status' => '0'
+				'salt' => $post_salt,
+				'status' => '0',
 			));
 		}
 	}

@@ -1,7 +1,5 @@
 var globalData; //  存储dump下来的所有数据
 var links = []; //  d3 svg数据
-var width = 960;  //  svg size
-var height = 760;
 var dataThead = $('#excel-details thead');
 var dataTbody = $('#excel-details tbody');
 
@@ -20,7 +18,8 @@ function jsonParse(data) {
 }
 
 function render(links) {
-	
+	var width = $('#graph').width();  //  svg size
+	var height = 680;
 	var isMouseDown, oldScale = 1;
 	var curPos_x, curPos_y, mousePos_x, mousePos_y;
 	var viewBox_x = 0, viewBox_y = 0;
@@ -50,6 +49,7 @@ function render(links) {
 		.append("svg")
 		.attr("width", width)
 		.attr("height", height)
+		.style('cursor', 'move')
 		.call(d3.behavior.zoom()
 			//  缩放
 				.scaleExtent([0.1, 10])
@@ -63,7 +63,6 @@ function render(links) {
 					}
 				})
 		);
-	
 	
 	svg.on("mousedown", function () {
 		isMouseDown = true;
@@ -114,12 +113,23 @@ function render(links) {
 		.attr("marker-end", "url(#end)");
 	
 	// define the nodes
+	force.drag()
+		.on('dragstart', function (d) {
+			d3.event.sourceEvent.stopPropagation();
+		});
+	
 	var node = svg.selectAll(".node")
 		.data(force.nodes())
 		.enter()
 		.append("g")
 		.attr("class", "node")
 		.call(force.drag);
+	
+	node.on("click", function (d) {
+		if (d3.event.defaultPrevented) {
+			return;
+		}
+	});
 	
 	var color = d3.scale.category20();
 	// add the nodes
@@ -245,7 +255,6 @@ $.ajax({
 	success: function (data) {
 		globalData = data;  //  for table shows
 		links = jsonParse(data);  //  for svg shows
-		console.log(links);
 		render(links);
 		showAllDetails();
 	}
