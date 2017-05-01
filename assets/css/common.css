@@ -185,10 +185,27 @@ html, body {
 	border: solid 1px #333;
 }
 
-#graph path.link {
+#graph .link {
 	fill: none;
-	stroke: #999;
+	stroke: #333;
+	stroke-opacity: .5;
 	stroke-width: 1.5px;
+}
+
+#graph .link-active {
+	fill: none;
+	stroke: #FF5A2E;
+	stroke-opacity: 1;
+	stroke-width: 1.5px;
+}
+
+#graph .node {
+	stroke: #555;
+}
+
+#graph .node-active {
+	stroke: #FF5A2E;
+	stroke-width: 1px;
 }
 
 /*

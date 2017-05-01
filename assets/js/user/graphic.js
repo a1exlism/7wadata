@@ -46,48 +46,32 @@ function render(links) {
 		.on("tick", tick).start();
 	
 	var svg = d3.select("#graph")
-		.append("svg")
+		.append("svg:svg")
 		.attr("width", width)
 		.attr("height", height)
 		.style('cursor', 'move')
+		.append('svg:g')
 		.call(d3.behavior.zoom()
-			//  缩放
-				.scaleExtent([0.1, 10])
-				.on('zoom', function () {
-					if (oldScale !== d3.event.scale) {
-						var scale = oldScale / d3.event.scale;
-						oldScale = d3.event.scale;
-						viewBox_x = curPos_x - scale * (curPos_x - viewBox_x);
-						viewBox_y = curPos_y - scale * (curPos_y - viewBox_y);
-						svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
-					}
-				})
+			.scaleExtent([0.1, 10])
+			.on('zoom', redraw)
 		);
 	
-	svg.on("mousedown", function () {
-		isMouseDown = true;
-		mousePos_x = d3.mouse(this)[0];
-		mousePos_y = d3.mouse(this)[1];
-	});
+	svg.append('svg:rect')
+		.attr('width', width)
+		.attr('height', height)
+		.style("fill", "none")
+		.style("pointer-events", "all");
 	
-	svg.on("mouseup", function () {
-		isMouseDown = false;
-		viewBox_x = viewBox_x - d3.mouse(this)[0] + mousePos_x;
-		viewBox_y = viewBox_y - d3.mouse(this)[1] + mousePos_y;
-		svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
-	});
+	var vis = svg.append('svg:g');
 	
-	svg.on("mousemove", function () {
-		curPos_x = d3.mouse(this)[0];
-		curPos_y = d3.mouse(this)[1];
-		if (isMouseDown) {
-			viewBox_x = viewBox_x - d3.mouse(this)[0] + mousePos_x;
-			viewBox_y = viewBox_y - d3.mouse(this)[1] + mousePos_y;
-			svg.attr("viewBox", viewBox_x + " " + viewBox_y + " " + width / oldScale + " " + height / oldScale);
-		}
-	});
+	function redraw() {
+		vis.attr('transform',
+			'translate(' + d3.event.translate + ')' +
+			' scale(' + d3.event.scale + ')');
+	}
+	
 	// build the arrow.
-	svg.append("svg:defs")    // Different link/path types can be defined here
+	vis.append("svg:defs")    // Different link/path types can be defined here
 		.selectAll("marker")
 		.data(["end"])
 		.enter()
@@ -103,33 +87,89 @@ function render(links) {
 		.attr("d", "M0,-5L10,0L0,5");
 	
 	// add the links and the arrows
-	var path = svg.append("svg:g")
+	var path = vis.append("svg:g")
 		.selectAll("path")
 		.data(force.links())
 		.enter()
 		.append("svg:path")
-		//    .attr("class", function(d) { return "link " + d.type; })
 		.attr("class", "link")
 		.attr("marker-end", "url(#end)");
 	
-	// define the nodes
-	force.drag()
-		.on('dragstart', function (d) {
-			d3.event.sourceEvent.stopPropagation();
-		});
+	//  node drag start && highlight
+	var nodeDrag = d3.behavior.drag()
+		.origin(function (d) {
+			return d;
+		})
+		.on("dragstart", dragstarted)
+		.on("drag", dragged)
+		.on("dragend", dragended);
 	
-	var node = svg.selectAll(".node")
+	var node = vis.selectAll(".node")
 		.data(force.nodes())
 		.enter()
 		.append("g")
 		.attr("class", "node")
-		.call(force.drag);
+		.call(nodeDrag);
 	
-	node.on("click", function (d) {
-		if (d3.event.defaultPrevented) {
-			return;
-		}
+	var linkedByIndex = {};
+	links.forEach(function (d) {
+		linkedByIndex[d.source.index + "," + d.target.index] = 1;
 	});
+	
+	function isConnected(a, b) {
+		return linkedByIndex[a.index + "," + b.index] || linkedByIndex[b.index + "," + a.index];
+	}
+	
+	node.on("mouseover", function (d) {
+		
+		node.classed("node-active", function (o) {
+			thisOpacity = isConnected(d, o) ? true : false;
+			this.setAttribute('fill-opacity', thisOpacity);
+			return thisOpacity;
+		});
+		
+		path.classed("link-active", function (o) {
+			return o.source === d || o.target === d ? true : false;
+		});
+		
+		d3.select(this).classed("node-active", true);
+		d3.select(this).select("circle").transition()
+			.duration(200)
+			.attr("r", d.weight * 2 + 8);
+	})
+		.on("mouseout", function (d) {
+			
+			node.classed("node-active", false);
+			path.classed("link-active", false);
+			
+			d3.select(this).select("circle").transition()
+				.duration(200)
+				.attr("r", 8);
+		});
+	
+	
+	function dragstarted(d) {
+		d3.event.sourceEvent.stopPropagation();
+		
+		d3.select(this)
+			.classed("dragging", true);
+		force.start();
+	}
+	
+	function dragged(d) {
+		
+		d3.select(this)
+			.attr("cx", d.x = d3.event.x)
+			.attr("cy", d.y = d3.event.y);
+		
+	}
+	
+	function dragended(d) {
+		d3.select(this)
+			.classed("dragging", false);
+	}
+	
+	//  node drag end
 	
 	var color = d3.scale.category20();
 	// add the nodes
