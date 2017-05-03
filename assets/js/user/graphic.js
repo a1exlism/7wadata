@@ -42,7 +42,7 @@ function render(links) {
 		.links(links)
 		.size([width, height])
 		.linkDistance(60)
-		.charge(-300)
+		.charge(-800)
 		.on("tick", tick).start();
 	
 	var svg = d3.select("#graph")
@@ -149,6 +149,7 @@ function render(links) {
 	
 	
 	function dragstarted(d) {
+		d.fixed = false;
 		d3.event.sourceEvent.stopPropagation();
 		
 		d3.select(this)
@@ -165,6 +166,7 @@ function render(links) {
 	}
 	
 	function dragended(d) {
+		d.fixed = true;
 		d3.select(this)
 			.classed("dragging", false);
 	}
@@ -299,4 +301,3 @@ $.ajax({
 		showAllDetails();
 	}
 });
-
